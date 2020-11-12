@@ -1,0 +1,120 @@
+﻿@model JobBoard.DATA.EF.UserDetail
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UserDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResumeFileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResumeFileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOpenToRelocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsOpenToRelocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmploymentType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmploymentType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VisaStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VisaStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfHire)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfHire)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserImage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PerformanceView.PerformanceRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PerformanceView.PerformanceRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.Email)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

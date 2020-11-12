@@ -39,5 +39,6 @@ namespace JobBoard.DATA.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Location> Locations { get; set; }
         public virtual PerformanceReview PerformanceView { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<JobBoard.DATA.EF.UserDetail>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResumeFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOpenToRelocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmploymentType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VisaStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfHire)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserImage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PerformanceView.PerformanceRating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResumeFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsOpenToRelocation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmploymentType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VisaStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfHire)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserImage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PerformanceView.PerformanceRating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+        </td>
+    </tr>
+}
+
+</table>

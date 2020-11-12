@@ -1,19 +1,47 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated) {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+@if (Request.IsAuthenticated)
+{
+
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>
+        <li class="drop-down">
+            <a href="@Url.Action("Index", "Manage")">Hello @User.Identity.GetUserName()!</a>
+            <ul>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Your Applications</a></li>
+                @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
+                {
+                    <li><a href="#">Your Positions</a></li>
+                    <li><a href="#">Create a Performance View</a></li>
+                }
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li><a href="@Url.Action("Index", "RolesAdmin")">View Roles</a></li>
+                    <li><a href="@Url.Action("Index", "UsersAdmin")">View Users</a></li>
+                }
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                        Log off <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </li>
     }
 }
-else {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+else
+{
+    <li>
+        <a href="/Account/Register" id="registerLink">
+            Register
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li>
+        <a href="/Account/Login" id="loginLink">
+            Login
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+        </a>
+    </li>
 }

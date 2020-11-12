@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JobBoard.DATA.EF.Metadata
+namespace JobBoard.DATA.EF
 {
     class ApplicationMetadata
     {

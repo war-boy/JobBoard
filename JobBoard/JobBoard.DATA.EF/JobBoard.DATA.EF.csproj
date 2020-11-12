@@ -91,7 +91,7 @@
     </Compile>
     <Compile Include="Metadata\ApplicationMetadata.cs" />
     <Compile Include="Metadata\ApplicationStatusMetadata.cs" />
-    <Compile Include="Metadata\JobDescriptionMetadata.cs" />
+    <Compile Include="Metadata\PositionMetadata.cs" />
     <Compile Include="Metadata\LocationMetadata.cs" />
     <Compile Include="Metadata\PerformanceReviewMetadata.cs" />
     <Compile Include="Metadata\UserdetailMetadata.cs" />
