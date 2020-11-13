@@ -103,6 +103,9 @@
           <Property Name="OpenPositionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationId" Type="int" Nullable="false" />
           <Property Name="PositionId" Type="int" Nullable="false" />
+          <Property Name="IsRemote" Type="bit" />
+          <Property Name="EmploymentType" Type="varchar" MaxLength="50" />
+          <Property Name="Duration" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="PerformanceReviews">
           <Key>
@@ -492,6 +495,9 @@
           <NavigationProperty Name="Applications" Relationship="Self.FK_Applications_OpenPositions" FromRole="OpenPositions" ToRole="Applications" />
           <NavigationProperty Name="Location" Relationship="Self.FK_OpenPositions_Locations" FromRole="OpenPositions" ToRole="Locations" />
           <NavigationProperty Name="Position" Relationship="Self.FK_OpenPositions_Positions" FromRole="OpenPositions" ToRole="Positions" />
+          <Property Name="IsRemote" Type="Boolean" />
+          <Property Name="EmploymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PerformanceReview">
           <Key>
@@ -845,6 +851,9 @@
           <EntitySetMapping Name="OpenPositions">
             <EntityTypeMapping TypeName="JobBoardModel.OpenPosition">
               <MappingFragment StoreEntitySet="OpenPositions">
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="EmploymentType" ColumnName="EmploymentType" />
+                <ScalarProperty Name="IsRemote" ColumnName="IsRemote" />
                 <ScalarProperty Name="OpenPositionId" ColumnName="OpenPositionId" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="PositionId" ColumnName="PositionId" />

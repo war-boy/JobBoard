@@ -1,4 +1,5 @@
 ﻿using JobBoard.UI.MVC.Models;
+using JobBoard.DATA.EF;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -153,6 +154,17 @@ namespace JobBoard.UI.MVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    #region Custom User Details
+                    UserDetail userDetails = new UserDetail();
+                    userDetails.UserId = user.Id;
+                    userDetails.FirstName = model.FirstName;
+                    userDetails.LastName = model.LastName;
+                    userDetails.DateOfHire = model.DateOfHire;
+
+                    JobBoardEntities db = new JobBoardEntities();
+                    db.UserDetails.Add(userDetails);
+                    db.SaveChanges();
+                    #endregion
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");

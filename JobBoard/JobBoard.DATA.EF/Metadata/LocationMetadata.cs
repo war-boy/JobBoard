@@ -2,7 +2,7 @@
 
 namespace JobBoard.DATA.EF
 {
-    class LocationMetadata
+    public class LocationMetadata
     {
         [Required]
         [Display(Name = "Location Id")]
@@ -10,15 +10,15 @@ namespace JobBoard.DATA.EF
 
         [Required]
         [Display(Name = "Store Number")]
-        [DisplayFormat(NullDisplayText = "*Please enter your Store Number")]
+        [DisplayFormat(NullDisplayText = "* Please enter your Store Number")]
         public string StoreNumber { get; set; }
 
         [Required]
-        [DisplayFormat(NullDisplayText = "*Please enter your Store's City")]
+        [DisplayFormat(NullDisplayText = "* Please enter your Store's City")]
         public string City { get; set; }
 
         [Required]
-        [DisplayFormat(NullDisplayText = "*Please enter your Store's State")]
+        [DisplayFormat(NullDisplayText = "* Please enter your Store's State")]
         public string State { get; set; }
 
         [Required]

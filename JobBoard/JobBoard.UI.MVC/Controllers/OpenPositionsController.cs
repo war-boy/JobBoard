@@ -10,112 +10,116 @@ using JobBoard.DATA.EF;
 
 namespace JobBoard.UI.MVC.Controllers
 {
-    public class LocationsController : Controller
+    public class OpenPositionsController : Controller
     {
         private JobBoardEntities db = new JobBoardEntities();
 
-        // GET: Locations
+        // GET: OpenPositions
         public ActionResult Index()
         {
-            var locations = db.Locations.Include(l => l.UserDetail);
-            return View(locations.ToList());
+            var openPositions = db.OpenPositions.Include(o => o.Location).Include(o => o.Position);
+            return View(openPositions.ToList());
         }
 
-        // GET: Locations/Details/5
+        // GET: OpenPositions/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+            if (openPosition == null)
             {
                 return HttpNotFound();
             }
-            return View(location);
+            return View(openPosition);
         }
 
-        // GET: Locations/Create
+        // GET: OpenPositions/Create
         public ActionResult Create()
         {
-            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FirstName");
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "StoreNumber");
+            ViewBag.PositionId = new SelectList(db.Positions, "PositionId", "Title");
             return View();
         }
 
-        // POST: Locations/Create
+        // POST: OpenPositions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
+        public ActionResult Create([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration")] OpenPosition openPosition)
         {
             if (ModelState.IsValid)
             {
-                db.Locations.Add(location);
+                db.OpenPositions.Add(openPosition);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FullName", location.ManagerId);
-            return View(location);
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "StoreNumber", openPosition.LocationId);
+            ViewBag.PositionId = new SelectList(db.Positions, "PositionId", "Title", openPosition.PositionId);
+            return View(openPosition);
         }
 
-        // GET: Locations/Edit/5
+        // GET: OpenPositions/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+            if (openPosition == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FirstName", location.ManagerId);
-            return View(location);
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "StoreNumber", openPosition.LocationId);
+            ViewBag.PositionId = new SelectList(db.Positions, "PositionId", "Title", openPosition.PositionId);
+            return View(openPosition);
         }
 
-        // POST: Locations/Edit/5
+        // POST: OpenPositions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
+        public ActionResult Edit([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration")] OpenPosition openPosition)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(location).State = EntityState.Modified;
+                db.Entry(openPosition).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FirstName", location.ManagerId);
-            return View(location);
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "StoreNumber", openPosition.LocationId);
+            ViewBag.PositionId = new SelectList(db.Positions, "PositionId", "Title", openPosition.PositionId);
+            return View(openPosition);
         }
 
-        // GET: Locations/Delete/5
+        // GET: OpenPositions/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+            if (openPosition == null)
             {
                 return HttpNotFound();
             }
-            return View(location);
+            return View(openPosition);
         }
 
-        // POST: Locations/Delete/5
+        // POST: OpenPositions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+            db.OpenPositions.Remove(openPosition);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

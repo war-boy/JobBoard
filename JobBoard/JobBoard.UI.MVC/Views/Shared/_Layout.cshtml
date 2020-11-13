@@ -75,10 +75,11 @@
                 <ul>
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
                     <li><a href="@Url.Action("About", "Home")">About</a></li>
-                    <li><a href="@Url.Action("Index", "Positions")">Find Positions</a></li>
-                    <li><a href="@Url.Action("Create", "Positions")">Create Postings</a></li>
-                    @*<li><a href="@Url.Action("Contact", "Home")">Contact</a></li>*@
-
+                    <li><a href="@Url.Action("Index", "OpenPositions")">Find Positions</a></li>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
+                    { 
+                    <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>
+                    }
                     <li>@Html.Partial("_LoginPartial")</li>               
                 </ul>
             </nav><!-- .nav-menu -->
@@ -88,7 +89,7 @@
 
     @RenderSection("banner", required: false)
 
-    <main id="main" class="customMain">
+    <main id="main" class="customMain container services">
         @RenderBody()
     </main>
 
@@ -188,7 +189,7 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        $('#responsive-nav ul li').each(function () {
+        $('#header.fixed-top .nav-menu ul li').each(function () {
             if ($(this).attr('href') == window.location.pathname) {
                 $(this).addClass('active');
     </script>

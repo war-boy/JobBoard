@@ -2,3 +2,22 @@
     position: relative;
     padding-top: 132px;
 }
+
+    .customMain p {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.5;
+        margin-bottom: 0;
+    }
+
+.panel-body {
+    line-height: 24px;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.panel-heading {
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 24px;
+}

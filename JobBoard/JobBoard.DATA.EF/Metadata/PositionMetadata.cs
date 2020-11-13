@@ -2,14 +2,14 @@
 
 namespace JobBoard.DATA.EF
 {
-    class PositionMetadata
+    public class PositionMetadata
     {
         [Required]
         [Display(Name = "Position Id")]       
         public int PositionId { get; set; }
 
         [Required]
-        [DisplayFormat(NullDisplayText = "*Position Title is required")]
+        [DisplayFormat(NullDisplayText = "* Position Title is required")]
         [Display(Name = "Position Title")]
         public string Title { get; set; }
 

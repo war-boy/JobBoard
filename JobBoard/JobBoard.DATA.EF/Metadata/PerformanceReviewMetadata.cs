@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JobBoard.DATA.EF
 {
-    class PerformanceReviewMetadata
+    public class PerformanceReviewMetadata
     {
     }
 }

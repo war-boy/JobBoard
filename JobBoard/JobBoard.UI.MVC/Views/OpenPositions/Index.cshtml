@@ -1,0 +1,28 @@
+﻿@model IEnumerable<JobBoard.DATA.EF.OpenPosition>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@foreach (var item in Model)
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+        @Html.DisplayFor(modelItem => item.Position.Title)- @Html.DisplayFor(modelItem=>item.OpenPositionId)
+        </div>
+        <div class="panel-body">
+            @Html.DisplayFor(modelItem => item.Position.JobDescription)
+            @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.OpenPositionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId })
+        </div>
+    </div>
+
+
+
+}
+
+        

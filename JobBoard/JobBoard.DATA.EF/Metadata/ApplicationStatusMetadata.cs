@@ -2,7 +2,7 @@
 
 namespace JobBoard.DATA.EF
 {
-    class ApplicationStatusMetadata
+    public class ApplicationStatusMetadata
     {
         
         [Display(Name = "Application Status Id")]

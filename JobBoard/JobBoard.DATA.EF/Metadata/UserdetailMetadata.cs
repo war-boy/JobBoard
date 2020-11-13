@@ -2,7 +2,7 @@
 
 namespace JobBoard.DATA.EF
 {
-    class UserdetailMetadata
+    public class UserdetailMetadata
     {
         [Required]
         [Display(Name = "Employee Id")]
@@ -45,8 +45,11 @@ namespace JobBoard.DATA.EF
     }
 
     [MetadataType(typeof(UserdetailMetadata))]
-    public partial class Userdetail
+    public partial class Userdetail : UserdetailMetadata
     {
-
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+        }
     }
 }
