@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
 @if (Request.IsAuthenticated)
 {
 
@@ -6,20 +7,34 @@
     {
         @Html.AntiForgeryToken()
 
+        JobBoardEntities db = new JobBoardEntities();
+
+        string userID = User.Identity.GetUserId();
+
+        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+
+        string userName = "Guest";
+
+        if (currentUser != null)
+        {
+            userName = currentUser.FirstName;
+        }
+
         <li class="drop-down">
-            <a href="@Url.Action("Index", "Manage")">Hello @User.Identity.GetUserName()!</a>
+            <a href="">Hello @userName</a>
             <ul>
-                <li><a href="#">Profile</a></li>
+                <li><a href="@Url.Action("Details", "UserDetails")/@currentUser.UserId">Profile</a></li>
                 <li><a href="#">Your Applications</a></li>
                 @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                 {
-                    <li><a href="#">Your Positions</a></li>
-                    <li><a href="#">Create a Performance View</a></li>
+                    <li><a href="@Url.Action("Index", "OpenPositions")">Your Positions</a></li>
+                    <li><a href="@Url.Action("Create", "PerformanceReviews")">Performance Reviews</a></li>
                 }
                 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                 {
                     <li><a href="@Url.Action("Index", "RolesAdmin")">View Roles</a></li>
                     <li><a href="@Url.Action("Index", "UsersAdmin")">View Users</a></li>
+                    <li><a href="@Url.Action("Create", "Location")">Add a Location</a></li>
                 }
                 <li>
                     <a href="javascript:document.getElementById('logoutForm').submit()">

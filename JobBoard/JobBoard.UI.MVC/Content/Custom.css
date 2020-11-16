@@ -1,23 +1,45 @@
-﻿.customMain {
+﻿body{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.customMain {
     position: relative;
     padding-top: 132px;
 }
 
-    .customMain p {
+    .customMain p, .customMain option, .customMain select, .customMain input {
         font-size: 15px;
         font-weight: 400;
         line-height: 1.5;
         margin-bottom: 0;
     }
 
-.panel-body {
-    line-height: 24px;
-    font-size: 14px;
-    margin-bottom: 0;
-}
+    .customMain label {
+        font-weight: 500;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .panel-body {
+        line-height: 24px;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
 
 .panel-heading {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 15px;
     font-size: 24px;
+   
+}
+
+div.panel-heading a {
+    color: white !important;
+}
+div.panel-heading a:hover {
+    text-decoration: underline;
+}
+
+a.active {
+    color: #106eea !important;
 }

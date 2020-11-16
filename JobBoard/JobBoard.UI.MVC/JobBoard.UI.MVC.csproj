@@ -174,6 +174,7 @@
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OpenPositionsController.cs" />
+    <Compile Include="Controllers\PerformanceReviewsController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
@@ -198,7 +199,7 @@
     <Content Include="Content\assets\img\clients\client-4.png" />
     <Content Include="Content\assets\img\clients\client-5.png" />
     <Content Include="Content\assets\img\clients\client-6.png" />
-    <Content Include="Content\assets\img\favicon.png" />
+    <Content Include="Content\assets\img\favicon.PNG" />
     <Content Include="Content\assets\img\hero-bg.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-1.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-2.jpg" />
@@ -484,6 +485,11 @@
     <Content Include="Views\OpenPositions\Details.cshtml" />
     <Content Include="Views\OpenPositions\Edit.cshtml" />
     <Content Include="Views\OpenPositions\Index.cshtml" />
+    <Content Include="Views\PerformanceReviews\Create.cshtml" />
+    <Content Include="Views\PerformanceReviews\Delete.cshtml" />
+    <Content Include="Views\PerformanceReviews\Details.cshtml" />
+    <Content Include="Views\PerformanceReviews\Edit.cshtml" />
+    <Content Include="Views\PerformanceReviews\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

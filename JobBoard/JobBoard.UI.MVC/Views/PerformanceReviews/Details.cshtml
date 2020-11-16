@@ -1,0 +1,50 @@
+﻿@model JobBoard.DATA.EF.PerformanceReview
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PerformanceReview</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReviewDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PerformanceRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PerformanceRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReviewDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location.StoreNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location.StoreNumber)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PerformanceReviewId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

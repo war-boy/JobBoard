@@ -6,17 +6,17 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>'Company Name' - @ViewBag.Title</title>
+    <title>GlobalSystems - @ViewBag.Title</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+
+
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-
-    <link href="~/Content/Custom.css" rel="stylesheet" />
     <!-- Favicons -->
-    <link href="~/Content/assets/img/favicon.png" rel="icon">
+    <link href="~/Content/assets/img/favicon.PNG" rel="icon">
     <link href="~/Content/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -36,6 +36,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+    <!--Custom-->
+    <link href="~/Content/Custom.css" rel="stylesheet" />
+
     <!-- =======================================================
     * Template Name: BizLand - v1.1.1
     * Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/
@@ -45,42 +48,22 @@
 </head>
 
 <body>
-
-    <!-- ======= Top Bar ======= -->
-    <div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
-        <div class="container d-flex">
-            <div class="contact-info mr-auto">
-                <i class="icofont-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
-                <i class="icofont-phone"></i> +1 5589 55488 55
-            </div>
-            <div class="social-links">
-                <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
-                <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
-                <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
-                <a href="#" class="skype"><i class="icofont-skype"></i></a>
-                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a>
-            </div>
-        </div>
-    </div>
-
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top">
+    <header id="header" class="d-none d-lg-flex align-items-center">
         <div class="container d-flex align-items-center">
 
-            <h1 class="logo mr-auto"><a href="index.html">BizLand<span>.</span></a></h1>
-            <!-- Uncomment below if you prefer to use an image logo -->
-            <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a>-->
+            <h1 class="logo mr-auto"><a href="@Url.Action("Index", "Home")">GlobalSystems<span>.</span></a></h1>
 
-            <nav class="nav-menu d-none d-lg-block" id="responsive-nav">
-                <ul>
+            <nav class="nav-menu d-none d-lg-block">
+                <ul id="responsive-nav">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
                     <li><a href="@Url.Action("About", "Home")">About</a></li>
-                    <li><a href="@Url.Action("Index", "OpenPositions")">Find Positions</a></li>
+                    <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
-                    { 
-                    <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>
+                    {
+                        <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>
                     }
-                    <li>@Html.Partial("_LoginPartial")</li>               
+                    <li>@Html.Partial("_LoginPartial")</li>
                 </ul>
             </nav><!-- .nav-menu -->
 
@@ -189,9 +172,11 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        $('#header.fixed-top .nav-menu ul li').each(function () {
+        $('#responsive-nav li a').each(function () {
             if ($(this).attr('href') == window.location.pathname) {
                 $(this).addClass('active');
+            }
+        });
     </script>
 
 </body>

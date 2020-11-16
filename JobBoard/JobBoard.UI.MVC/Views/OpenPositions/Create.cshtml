@@ -11,24 +11,27 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <div class="form-group">
-            @Html.LabelFor(model => model.PositionId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
-                <a href="@Url.Action("Create", "Positions")">Don't see it? Click here to add your opening.</a>
-            </div>
-        </div>
+    <div class="row">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-            </div>
+
+        <div class="form-group col-md-5">
+            @Html.LabelFor(model => model.PositionId, htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control form-control-lg" })
+            @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
+            <a href="@Url.Action("Create", "Positions")">Don't see it? Click here to add your opening.</a>
         </div>
 
+        <div class="form-group col-md-5">
+            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-6" })
+
+            @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control form-control-lg" })
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="row">
         <div class="form-group">
             @Html.LabelFor(model => model.IsRemote, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -54,19 +57,20 @@
                 @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
             </div>
         </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-    </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+        }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
