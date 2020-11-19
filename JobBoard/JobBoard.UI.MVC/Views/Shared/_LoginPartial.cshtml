@@ -13,12 +13,15 @@
 
         UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
 
+
         string userName = "Guest";
+
 
         if (currentUser != null)
         {
             userName = currentUser.FirstName;
         }
+
 
         <li class="drop-down">
             <a href="">Hello @userName</a>
@@ -34,7 +37,7 @@
                 {
                     <li><a href="@Url.Action("Index", "RolesAdmin")">View Roles</a></li>
                     <li><a href="@Url.Action("Index", "UsersAdmin")">View Users</a></li>
-                    <li><a href="@Url.Action("Create", "Location")">Add a Location</a></li>
+                    <li><a href="@Url.Action("Create", "Locations")">Add a Location</a></li>
                 }
                 <li>
                     <a href="javascript:document.getElementById('logoutForm').submit()">

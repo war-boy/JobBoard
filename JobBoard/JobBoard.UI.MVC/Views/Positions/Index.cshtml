@@ -4,7 +4,15 @@
     ViewBag.Title = "Job Postings";
 }
 
-<h2>Index</h2>
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </section>
+}
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -20,20 +28,21 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PositionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PositionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PositionId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobDescription)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PositionId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PositionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PositionId })
+            </td>
+        </tr>
+    }
 
 </table>

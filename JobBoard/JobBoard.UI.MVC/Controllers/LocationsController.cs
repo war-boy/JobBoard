@@ -14,7 +14,7 @@ namespace JobBoard.UI.MVC.Controllers
     {
         private JobBoardEntities db = new JobBoardEntities();
 
-        // GET: Locations
+        // GET: Locations       
         public ActionResult Index()
         {
             var locations = db.Locations.Include(l => l.UserDetail);
@@ -37,6 +37,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: Locations/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FirstName");
@@ -47,6 +48,7 @@ namespace JobBoard.UI.MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
         {
@@ -62,6 +64,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: Locations/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,6 +84,7 @@ namespace JobBoard.UI.MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
         {
@@ -95,6 +99,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: Locations/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -111,6 +116,7 @@ namespace JobBoard.UI.MVC.Controllers
 
         // POST: Locations/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

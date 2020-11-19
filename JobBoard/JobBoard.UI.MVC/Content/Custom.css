@@ -1,45 +1,96 @@
-﻿body{
+﻿body {
     padding-top: 0px;
     padding-bottom: 0px;
 }
-.customMain {
-    position: relative;
-    padding-top: 132px;
+
+h2 {
+    font-size: 26px;
+    font-weight: 700
 }
 
-    .customMain p, .customMain option, .customMain select, .customMain input {
-        font-size: 15px;
+.breadcrumbs {
+    margin-top: 40px !important;
+}
+    .breadcrumbs h2 {
+        font-size: 26px;
         font-weight: 400;
-        line-height: 1.5;
-        margin-bottom: 0;
+        margin: 0;
     }
 
-    .customMain label {
-        font-weight: 500;
-        margin-bottom: 15px;
-        font-size: 18px;
-    }
 
-    .panel-body {
-        line-height: 24px;
-        font-size: 14px;
-        margin-bottom: 0;
-    }
+
+.customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.customMain label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.panel-body {
+    line-height: 24px;
+    font-size: 14px;
+    margin-bottom: 0;
+}
 
 .panel-heading {
-    font-weight: 500;
+    font-weight: 400;
     margin-bottom: 15px;
-    font-size: 24px;
-   
+    font-size: 20px;
+    padding: 11px 15px 10px 15px;
 }
 
 div.panel-heading a {
     color: white !important;
 }
-div.panel-heading a:hover {
-    text-decoration: underline;
-}
+
+    div.panel-heading a:hover {
+        text-decoration: underline;
+    }
 
 a.active {
     color: #106eea !important;
+}
+
+#search-bar {
+    width: -webkit-fill-available;
+    max-width: 490px;
+    font-size: 1.5em;
+    margin: 0;
+}
+
+/*To get the button and search bar on the job board to be horizontal*/
+.search-container {
+    display: flex;
+}
+
+.bottom-link {
+    padding-bottom: 20px;
+}
+
+div.portfolio-description h2{
+    margin-bottom: 10px;
+}
+h5.card-title {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+p.card-text {
+    margin-bottom: .75rem;
+    font-size: 13px;
+    
+}
+
+.card.text-center{
+    min-height: 273px;
+}
+
+select.form-control, input.form-control {
+    margin: 5px 0;
 }

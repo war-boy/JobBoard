@@ -29,6 +29,9 @@ namespace JobBoard.DATA.EF
     [MetadataType(typeof(LocationMetadata))]
     public partial class Location
     {
-
+        public string FullLocation
+        {
+            get { return $"{City}, {State}"; }
+        }
     }
 }

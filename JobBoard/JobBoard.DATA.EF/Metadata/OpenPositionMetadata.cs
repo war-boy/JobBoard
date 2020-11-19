@@ -18,7 +18,7 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Location")]
         public int LocationId { get; set; }
 
-        [Display(Name = "Does this position allow for remote work?")]
+        [Display(Name = "Remote")]
         public bool? IsRemote { get; set; }
 
         [Display(Name = "Employment Type")]

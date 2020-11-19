@@ -15,6 +15,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <!--Pagination-->
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+
     <!-- Favicons -->
     <link href="~/Content/assets/img/favicon.PNG" rel="icon">
     <link href="~/Content/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -36,7 +39,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <!--Custom-->
+    <!--Custom CSS-->
     <link href="~/Content/Custom.css" rel="stylesheet" />
 
     <!-- =======================================================
@@ -66,14 +69,23 @@
                     <li>@Html.Partial("_LoginPartial")</li>
                 </ul>
             </nav><!-- .nav-menu -->
-
         </div>
+
+
     </header><!-- End Header -->
 
     @RenderSection("banner", required: false)
 
-    <main id="main" class="customMain container services">
-        @RenderBody()
+    @RenderSection("head", required: false)
+
+    @RenderSection("searchBar", required: false)
+
+    <main id="main" class="customMain">
+        <section class="inner-page">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </section>
     </main>
 
     <!-- ======= Footer ======= -->
@@ -166,10 +178,15 @@
     <!-- Template Main JS File -->
     <script src="~/Content/assets/js/main.js"></script>
 
+    <!--Custom JS-->
+    <script src="~/Content/custom.js"></script>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 
     @RenderSection("scripts", required: false)
+
+
 
     <script>
         $('#responsive-nav li a').each(function () {
@@ -177,6 +194,16 @@
                 $(this).addClass('active');
             }
         });
+
+
+        $(".check").click(function () {
+            $("#IsRemoteBox").prop("checked", true);
+        });
+
+        $(".uncheck").click(function () {
+            $("#IsRemoteBox").prop("checked", false);
+        });
+
     </script>
 
 </body>

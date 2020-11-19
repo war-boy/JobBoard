@@ -15,6 +15,7 @@ namespace JobBoard.UI.MVC.Controllers
         private JobBoardEntities db = new JobBoardEntities();
 
         // GET: PerformanceReviews
+        [Authorize]
         public ActionResult Index()
         {
             var performanceReviews = db.PerformanceReviews.Include(p => p.Location);
@@ -22,6 +23,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: PerformanceReviews/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: PerformanceReviews/Create
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create()
         {
             ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "StoreNumber");
@@ -47,6 +50,7 @@ namespace JobBoard.UI.MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PerformanceReviewId,LocationId,ReviewDate,PerformanceRating,ReviewDetails")] PerformanceReview performanceReview)
         {
@@ -62,6 +66,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: PerformanceReviews/Edit/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,6 +86,7 @@ namespace JobBoard.UI.MVC.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PerformanceReviewId,LocationId,ReviewDate,PerformanceRating,ReviewDetails")] PerformanceReview performanceReview)
         {
@@ -95,6 +101,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: PerformanceReviews/Delete/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -111,6 +118,7 @@ namespace JobBoard.UI.MVC.Controllers
 
         // POST: PerformanceReviews/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin, Manager")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

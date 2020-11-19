@@ -8,8 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using JobBoard.DATA.EF;
 
-namespace JobBoard.UI.MVC.Controllers
-{
+namespace JobBoard.UI.MVC.Controllers{
+
+    [Authorize]
     public class UserDetailsController : Controller
     {
         private JobBoardEntities db = new JobBoardEntities();

@@ -10,13 +10,13 @@ namespace JobBoard.DATA.EF
 
         [Required]
         [DisplayFormat(NullDisplayText = "* Position Title is required")]
+        [StringLength(30, ErrorMessage = "* Position Title must be less than 30 characters.")]
         [Display(Name = "Position Title")]
         public string Title { get; set; }
 
         [Required]
         [Display(Name = "Job Description")]
         [DisplayFormat(NullDisplayText = "* Please provide a description for your position")]
-        [StringLength(50, ErrorMessage = "* Description must be less than 50 characters.")]
         [UIHint("Multilinetext")]
         public string JobDescription { get; set; }
     }
