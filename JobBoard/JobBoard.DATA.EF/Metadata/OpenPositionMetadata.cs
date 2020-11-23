@@ -6,7 +6,7 @@ namespace JobBoard.DATA.EF
     {
         [Required]
         [Display(Name = "Req Number")]
-        public int OpenPositionId { get; set; }
+        public int? OpenPositionId { get; set; }
 
         [Required]
         [Display(Name = "Position")]
@@ -19,7 +19,7 @@ namespace JobBoard.DATA.EF
         public int LocationId { get; set; }
 
         [Display(Name = "Remote")]
-        public bool? IsRemote { get; set; }
+        public bool IsRemote { get; set; }
 
         [Display(Name = "Employment Type")]
         public string EmploymentType { get; set; }

@@ -39,10 +39,17 @@ h2 {
 }
 
 .panel-heading {
-    font-weight: 400;
+    font-weight: 300;
     margin-bottom: 15px;
-    font-size: 20px;
+    font-size: 24px;
     padding: 11px 15px 10px 15px;
+}
+
+div.boardCrud {
+    float: right;
+    font-weight: 200;
+    font-size: 16px;
+    padding-top: inherit;
 }
 
 div.panel-heading a {
@@ -93,4 +100,31 @@ p.card-text {
 
 select.form-control, input.form-control {
     margin: 5px 0;
+}
+
+textarea.form-control {
+    padding-bottom: 75px;
+}
+
+
+/*UserDetails - Details*/
+li.list-group-item{
+    border-bottom-width: 2px !important;
+}
+
+.openOpps {
+    color: #106eea;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.employeeDetails{
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+}
+
+iframe{
+    padding-left: 35px;
 }

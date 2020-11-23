@@ -19,6 +19,7 @@ namespace JobBoard.DATA.EF
         {
             this.OpenPositions = new HashSet<OpenPosition>();
             this.PerformanceViews = new HashSet<PerformanceReview>();
+            this.UserDetails = new HashSet<UserDetail>();
         }
     
         public int LocationId { get; set; }
@@ -32,5 +33,7 @@ namespace JobBoard.DATA.EF
         public virtual ICollection<OpenPosition> OpenPositions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PerformanceReview> PerformanceViews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserDetail> UserDetails { get; set; }
     }
 }

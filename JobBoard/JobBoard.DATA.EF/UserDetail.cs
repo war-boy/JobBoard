@@ -25,7 +25,7 @@ namespace JobBoard.DATA.EF
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ResumeFileName { get; set; }
-        public Nullable<bool> IsOpenToRelocation { get; set; }
+        public bool IsOpenToRelocation { get; set; }
         public string Title { get; set; }
         public string EmploymentType { get; set; }
         public string VisaStatus { get; set; }
@@ -33,6 +33,8 @@ namespace JobBoard.DATA.EF
         public string Notes { get; set; }
         public string UserImage { get; set; }
         public Nullable<int> PerformanceReviewId { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public bool IsOpenToNewOpps { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Application> Applications { get; set; }
@@ -40,5 +42,6 @@ namespace JobBoard.DATA.EF
         public virtual ICollection<Location> Locations { get; set; }
         public virtual PerformanceReview PerformanceView { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Location Location { get; set; }
     }
 }

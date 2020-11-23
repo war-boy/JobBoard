@@ -27,18 +27,22 @@
             <a href="">Hello @userName</a>
             <ul>
                 <li><a href="@Url.Action("Details", "UserDetails")/@currentUser.UserId">Profile</a></li>
-                <li><a href="#">Your Applications</a></li>
+
+                <li><a href="@Url.Action("Index", "Applications", new { id = currentUser.UserId })">Your Applications</a></li>
+
                 @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                 {
                     <li><a href="@Url.Action("Index", "OpenPositions")">Your Positions</a></li>
                     <li><a href="@Url.Action("Create", "PerformanceReviews")">Performance Reviews</a></li>
                 }
+
                 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                 {
                     <li><a href="@Url.Action("Index", "RolesAdmin")">View Roles</a></li>
                     <li><a href="@Url.Action("Index", "UsersAdmin")">View Users</a></li>
                     <li><a href="@Url.Action("Create", "Locations")">Add a Location</a></li>
                 }
+
                 <li>
                     <a href="javascript:document.getElementById('logoutForm').submit()">
                         Log off <i class="fa fa-sign-out" aria-hidden="true"></i>

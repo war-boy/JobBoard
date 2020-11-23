@@ -91,11 +91,12 @@
     </Compile>
     <Compile Include="Metadata\ApplicationMetadata.cs" />
     <Compile Include="Metadata\ApplicationStatusMetadata.cs" />
+    <Compile Include="Metadata\AspNetUserMetadata.cs" />
     <Compile Include="Metadata\OpenPositionMetadata.cs" />
     <Compile Include="Metadata\PositionMetadata.cs" />
     <Compile Include="Metadata\LocationMetadata.cs" />
     <Compile Include="Metadata\PerformanceReviewMetadata.cs" />
-    <Compile Include="Metadata\UserdetailMetadata.cs" />
+    <Compile Include="Metadata\UserDetailMetadata.cs" />
     <Compile Include="OpenPosition.cs">
       <DependentUpon>JobBoardModel.tt</DependentUpon>
     </Compile>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using JobBoard.DATA.EF;
+using Microsoft.AspNet.Identity;
 using PagedList;
 using PagedList.Mvc;
 
@@ -62,6 +63,54 @@ namespace JobBoard.UI.MVC.Controllers
             }
             return View(openPosition);
         }
+
+        public ActionResult CreateApp(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+
+            if (openPosition == null)
+            {
+                return HttpNotFound();
+            }
+
+            #region Get Current User
+            string userID = User.Identity.GetUserId();
+
+            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+            #endregion
+            Application application = new Application();
+
+            application.OpenPositionId = openPosition.OpenPositionId;
+
+            application.UserId = currentUser.UserId;
+
+            application.ApplicationDate = DateTime.Now;
+
+            //Default to Pending
+            application.ApplicationStatusId = 1;
+
+            application.ResumeFilename = currentUser.ResumeFileName;
+
+            try
+            {
+                db.Applications.Add(application);
+                db.SaveChanges();    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View("ApplicationConfirm", openPosition);
+            //return View("Details", new { ID = id });
+        }
+
 
         // GET: OpenPositions/Create
         [Authorize(Roles = "Admin, Manager")]

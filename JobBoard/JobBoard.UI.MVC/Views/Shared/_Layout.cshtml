@@ -18,6 +18,10 @@
     <!--Pagination-->
     <link href="~/Content/PagedList.css" rel="stylesheet" />
 
+    <!--Data Tables-->
+    <link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
+    <link href="~/Content/datatables/datatables.css" rel="stylesheet" />
+
     <!-- Favicons -->
     <link href="~/Content/assets/img/favicon.PNG" rel="icon">
     <link href="~/Content/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -60,7 +64,7 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul id="responsive-nav">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("About", "Home")">About</a></li>
+                    <li><a href="@Url.Action("Index", "Locations")">Locations</a></li>
                     <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                     {
@@ -163,6 +167,7 @@
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+
     <!-- Vendor JS Files -->
     <script src="~/Content/assets/vendor/jquery/jquery.min.js"></script>
     <script src="~/Content/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -181,8 +186,12 @@
     <!--Custom JS-->
     <script src="~/Content/custom.js"></script>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <!--Datatables-->
+    <script src="~/Content/datatables/datatables.min.js"></script>
+    <script src="~/Content/datatables/datatables.js"></script>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
 
     @RenderSection("scripts", required: false)
 

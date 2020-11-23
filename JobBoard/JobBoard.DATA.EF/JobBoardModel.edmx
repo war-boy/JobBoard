@@ -151,6 +151,8 @@
           <Property Name="Notes" Type="ntext" />
           <Property Name="UserImage" Type="varchar" MaxLength="100" />
           <Property Name="PerformanceReviewId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="IsOpenToNewOpps" Type="bit" />
         </EntityType>
         <Association Name="FK_Applications_ApplicationStatus">
           <End Role="ApplicationStatus" Type="Self.ApplicationStatus" Multiplicity="1" />
@@ -244,18 +246,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Locations_UserDetails">
-          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
-          <End Role="Locations" Type="Self.Locations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserDetails">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Locations">
-              <PropertyRef Name="ManagerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OpenPositions_Locations">
           <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
           <End Role="OpenPositions" Type="Self.OpenPositions" Multiplicity="*" />
@@ -301,6 +291,18 @@
             </Principal>
             <Dependent Role="UserDetails">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDetails_Locations">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -359,10 +361,6 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_Locations_UserDetails" Association="Self.FK_Locations_UserDetails">
-            <End Role="UserDetails" EntitySet="UserDetails" />
-            <End Role="Locations" EntitySet="Locations" />
-          </AssociationSet>
           <AssociationSet Name="FK_OpenPositions_Locations" Association="Self.FK_OpenPositions_Locations">
             <End Role="Locations" EntitySet="Locations" />
             <End Role="OpenPositions" EntitySet="OpenPositions" />
@@ -377,6 +375,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_UserDetails_AspNetUsers" Association="Self.FK_UserDetails_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDetails_Locations" Association="Self.FK_UserDetails_Locations">
+            <End Role="Locations" EntitySet="Locations" />
             <End Role="UserDetails" EntitySet="UserDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_UserDetails_PerformanceViews" Association="Self.FK_UserDetails_PerformanceViews">
@@ -484,6 +486,7 @@
           <NavigationProperty Name="UserDetail" Relationship="Self.FK_Locations_UserDetails" FromRole="Locations" ToRole="UserDetails" />
           <NavigationProperty Name="OpenPositions" Relationship="Self.FK_OpenPositions_Locations" FromRole="Locations" ToRole="OpenPositions" />
           <NavigationProperty Name="PerformanceViews" Relationship="Self.FK_PerformanceViews_Locations" FromRole="Locations" ToRole="PerformanceViews" />
+          <NavigationProperty Name="UserDetails" Relationship="JobBoardModel.FK_UserDetails_Locations" FromRole="Location" ToRole="UserDetail" />
         </EntityType>
         <EntityType Name="OpenPosition">
           <Key>
@@ -550,6 +553,9 @@
           <NavigationProperty Name="Locations" Relationship="Self.FK_Locations_UserDetails" FromRole="UserDetails" ToRole="Locations" />
           <NavigationProperty Name="PerformanceView" Relationship="Self.FK_UserDetails_PerformanceViews" FromRole="UserDetails" ToRole="PerformanceViews" />
           <NavigationProperty Name="AspNetUser" Relationship="JobBoardModel.FK_UserDetails_AspNetUsers" FromRole="UserDetail" ToRole="AspNetUser" />
+          <Property Name="LocationId" Type="Int32" />
+          <NavigationProperty Name="Location" Relationship="JobBoardModel.FK_UserDetails_Locations" FromRole="UserDetail" ToRole="Location" />
+          <Property Name="IsOpenToNewOpps" Type="Boolean" />
         </EntityType>
         <Association Name="FK_Applications_ApplicationStatus">
           <End Role="ApplicationStatus" Type="Self.ApplicationStatu" Multiplicity="1" />
@@ -741,6 +747,10 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="UserDetail" EntitySet="UserDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserDetails_Locations" Association="JobBoardModel.FK_UserDetails_Locations">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="UserDetail" EntitySet="UserDetails" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_UserDetails_AspNetUsers">
           <End Type="JobBoardModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
@@ -751,6 +761,18 @@
             </Principal>
             <Dependent Role="UserDetail">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDetails_Locations">
+          <End Type="JobBoardModel.Location" Role="Location" Multiplicity="0..1" />
+          <End Type="JobBoardModel.UserDetail" Role="UserDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="UserDetail">
+              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -883,6 +905,8 @@
           <EntitySetMapping Name="UserDetails">
             <EntityTypeMapping TypeName="JobBoardModel.UserDetail">
               <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="IsOpenToNewOpps" ColumnName="IsOpenToNewOpps" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

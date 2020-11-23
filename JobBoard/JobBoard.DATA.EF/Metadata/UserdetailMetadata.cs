@@ -2,7 +2,7 @@
 
 namespace JobBoard.DATA.EF
 {
-    public class UserdetailMetadata
+    public class UserDetailMetadata
     {
         [Required]
         [Display(Name = "Employee Id")]
@@ -19,8 +19,10 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Resume")]
         public string ResumeFileName { get; set; }
 
+        [Required]
+        [DisplayFormat(NullDisplayText = "* Please Choose an Option")]
         [Display(Name = "Open to relocation?")]
-        public bool? IsOpenToRelocation { get; set; }
+        public bool IsOpenToRelocation { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -42,14 +44,18 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Employee Image")]
         public string UserImage { get; set; }
 
+        [Required]
+        [DisplayFormat(NullDisplayText = "* Please Choose an Option")]
+        public bool IsOpenToNewOpps { get; set; }
+
     }
 
-    [MetadataType(typeof(UserdetailMetadata))]
-    public partial class Userdetail : UserdetailMetadata
+    [MetadataType(typeof(UserDetailMetadata))]
+    public partial class UserDetail 
     {
         public string FullName
         {
-            get { return FirstName + " " + LastName; }
+            get { return $"{FirstName} {LastName}"; }
         }
     }
 }

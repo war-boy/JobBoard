@@ -1,0 +1,14 @@
+﻿@model JobBoard.DATA.EF.OpenPosition
+
+@{
+    ViewBag.Title = "ApplicationConfirm";
+}
+
+<h2>Your Application was Successfully Submitted!</h2>
+<p>Your information was submitted to @Model.Position.Title (Req #@Model.OpenPositionId).</p>
+<p>The manager will contact you if they are interested in moving forward with your application.</p>
+<br/>
+
+<a href="@Url.Action("Details", "OpenPositions", new { id = Model.OpenPositionId})" style="display: block;" >Return to Job Posting</a>
+<a href="@Url.Action("Index", "OpenPositions")">Return to Job Board</a>
+

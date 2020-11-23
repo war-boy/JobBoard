@@ -1,132 +1,73 @@
-﻿@model JobBoard.DATA.EF.UserDetail
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model JobBoard.DATA.EF.UserDetail
 
 @{
     ViewBag.Title = "Details";
 }
 
-
-@*<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
+<div class="card col-md-6 employeeDetails" style="width: 22rem;">
+    <img class="card-img-top" src="~/Content/employeeImages/photo-1568493021943-4077b55c95a3.jpg" alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <h5 class="card-title">@Html.DisplayFor(model => model.FullName)</h5>
+        <p class="card-text">@Html.DisplayFor(model => model.Title)<br />@Html.DisplayFor(model => model.Location.FullLocation)</p>
+        <p class="card-text"></p>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+        <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.DateOfHire):</b><br /> @Html.DisplayFor(model => model.DateOfHire)</li>
+        <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.Email):</b><br /> @Html.DisplayFor(model => model.AspNetUser.Email)</li>
+        <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber):</b><br /> @Html.DisplayFor(model => model.AspNetUser.PhoneNumber)</li>
     </ul>
-    <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
-    </div>
-</div>*@
+    @if (Model.IsOpenToNewOpps)
+    {
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item openOpps">Open to new Opportunities</li>
+            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.EmploymentType):</b><br /> @Html.DisplayFor(model => model.EmploymentType)</li>
+            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.IsOpenToRelocation):</b><br /> @(Model.IsOpenToRelocation ? "Yes" : "No")</li>
+            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.VisaStatus):</b><br /> @Html.DisplayFor(model => model.VisaStatus)</li>
+        </ul>
+    }
 
-<h2>Details</h2>
+        <div class="card-body">
+            <!-- #region Get current user -->
+            @{
+                JobBoardEntities db = new JobBoardEntities();
 
-<div>
-    <h4>UserDetail</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
+                string userID = User.Identity.GetUserId();
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
+                UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+            }
+            <!-- #endregion -->
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
+            @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
+            {
+                @Html.ActionLink("Edit Informantion", "Edit", new { id = Model.UserId });
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
+            <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
+            @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Manager"))))
+            {
+                <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews | </a>
+            }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ResumeFileName)
-        </dt>
+            <!--If this is the view for the current user's details, don't give them the option to contact-->
+            @if ((Model.UserId != currentUser.UserId))
+            {
+                <a href="#" class="card-link">Contact</a>
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.ResumeFileName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsOpenToRelocation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsOpenToRelocation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmploymentType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmploymentType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VisaStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VisaStatus)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateOfHire)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateOfHire)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserImage)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserImage)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PerformanceView.PerformanceRating)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PerformanceView.PerformanceRating)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AspNetUser.Email)
-        </dd>
-
-    </dl>
+        </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="col-md-6">
+    <iframe src="~/Content/resumes/RyanEutslerResumeIT.pdf" width="810" height="900" scrolling="no" frameborder="0"></iframe>
+</div>
+
+<dt>
+    @Html.DisplayNameFor(model => model.Notes)
+</dt>
+
+<dd>
+    @Html.DisplayFor(model => model.Notes)
+</dd>
+

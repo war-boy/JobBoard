@@ -2,6 +2,7 @@
 @using JobBoard.DATA.EF;
 @model JobBoard.DATA.EF.OpenPosition
 
+
 @{
     ViewBag.Title = $"{Model.Position.Title}";
 }
@@ -41,8 +42,8 @@
                 <p class="card-text">@Html.DisplayFor(model => model.Duration)</p>
 
 
-                <a href="@Url.Action("Create", "Applications")" class="btn btn-primary">Apply</a>
-                <a href="@Url.Action("Create", "Applications")" class="btn btn-primary">Save</a>
+                <a href="@Url.Action("CreateApp", new { id = Model.OpenPositionId })" class="btn btn-primary">Apply</a>
+                @*<a href="@Url.Action("Create", "Applications")" class="btn btn-primary">Save</a>*@
 
                 <!-- #region Get current user -->
                 @{
@@ -68,6 +69,7 @@
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayNameFor(model => model.Position.JobDescription)</h5>
                 <p class="card-text">@Html.DisplayFor(model => model.Position.JobDescription)</p>
+                @Html.Partial("Delete")
             </div>
         </div>
     </div>
