@@ -207,6 +207,7 @@
     <Content Include="Content\assets\img\clients\client-6.png" />
     <Content Include="Content\assets\img\favicon.PNG" />
     <Content Include="Content\assets\img\hero-bg.jpg" />
+    <Content Include="Content\assets\img\index-banner.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-1.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-2.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-3.jpg" />
@@ -505,6 +506,8 @@
     <Content Include="Views\PerformanceReviews\Index.cshtml" />
     <Content Include="Views\OpenPositions\Delete.cshtml" />
     <Content Include="Views\OpenPositions\ApplicationConfirm.cshtml" />
+    <Content Include="Views\OpenPositions\YourPositions.cshtml" />
+    <Content Include="Views\Applications\PositionApplications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

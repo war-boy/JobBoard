@@ -8,7 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using JobBoard.DATA.EF;
 
-namespace JobBoard.UI.MVC.Controllers{
+namespace JobBoard.UI.MVC.Controllers
+{
 
     [Authorize]
     public class UserDetailsController : Controller
@@ -34,7 +35,58 @@ namespace JobBoard.UI.MVC.Controllers{
             {
                 return HttpNotFound();
             }
+
+
+
             return View(userDetail);
+        }
+
+        public ActionResult AddResume(string id, HttpPostedFileBase resume)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            UserDetail userDetail = db.UserDetails.Find(id);
+            if (userDetail == null)
+            {
+                return HttpNotFound();
+            }
+            
+            #region FileUpload
+            string resumeName;
+
+            if (resume != null)
+            {
+                resumeName = resume.FileName;
+
+                string ext = resumeName.Substring(resumeName.LastIndexOf('.'));
+
+                string[] validExts = { ".pdf", ".doc", ".docx" };
+
+                if (validExts.Contains(ext.ToLower()) && (resume.ContentLength <= 4194304))//4mb
+                {
+                    resumeName = Guid.NewGuid() + ext.ToLower();
+
+                    string savePath = Server.MapPath("~/Content/resumes");
+
+                }
+                else
+                {
+                    ViewBag.Message = "Your resume was not uploaded correctely, please try a different file type (only .pdf, .doc and .docx are accepted";
+                }
+
+                userDetail.ResumeFileName = resumeName;
+                #endregion
+
+                db.Entry(userDetail).State = EntityState.Modified;
+                db.SaveChanges();
+                //return View("Details", new { ID = id, userDetail });
+                return View("Index");
+            }
+            //return View(userDetail);
+            return View("Index");
         }
 
         // GET: UserDetails/Create
@@ -54,6 +106,7 @@ namespace JobBoard.UI.MVC.Controllers{
         {
             if (ModelState.IsValid)
             {
+
                 db.UserDetails.Add(userDetail);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -63,6 +116,7 @@ namespace JobBoard.UI.MVC.Controllers{
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }
+
 
         // GET: UserDetails/Edit/5
         public ActionResult Edit(string id)

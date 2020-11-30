@@ -33,19 +33,18 @@ namespace JobBoard.UI.MVC.Controllers
             var yourApplications = db.Applications.Where(a => a.UserId == id);
             return View(yourApplications.ToList());
            
-
         }
 
-        //public ActionResult YourApplications(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
+        public ActionResult PositionApplications(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-        //    var applications = db.Applications.Where(a => a.UserId == id);
-        //    return View(applications.ToList());
-        //}
+            var positionApplications = db.Applications.Where(a => a.OpenPositionId == id);
+            return View(positionApplications.ToList());
+        }
 
         // GET: Applications/Details/5
         [Authorize(Roles = "Admin, Manager")]

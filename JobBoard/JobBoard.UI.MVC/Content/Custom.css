@@ -1,4 +1,5 @@
-﻿body {
+﻿/*General*/
+body {
     padding-top: 0px;
     padding-bottom: 0px;
 }
@@ -11,12 +12,16 @@ h2 {
 .breadcrumbs {
     margin-top: 40px !important;
 }
+
     .breadcrumbs h2 {
         font-size: 26px;
         font-weight: 400;
         margin: 0;
     }
 
+a.active {
+    color: #106eea !important;
+}
 
 
 .customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary {
@@ -32,6 +37,7 @@ h2 {
     font-size: 15px;
 }
 
+/*Job Board*/
 .panel-body {
     line-height: 24px;
     font-size: 14px;
@@ -40,16 +46,9 @@ h2 {
 
 .panel-heading {
     font-weight: 300;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     font-size: 24px;
     padding: 11px 15px 10px 15px;
-}
-
-div.boardCrud {
-    float: right;
-    font-weight: 200;
-    font-size: 16px;
-    padding-top: inherit;
 }
 
 div.panel-heading a {
@@ -60,15 +59,29 @@ div.panel-heading a {
         text-decoration: underline;
     }
 
-a.active {
-    color: #106eea !important;
+
+.panel-location {
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.boardCrud {
+    float: right;
+    font-weight: 200;
+    font-size: 16px;
+    padding-top: 10px;
 }
 
 #search-bar {
-    width: -webkit-fill-available;
     max-width: 490px;
-    font-size: 1.5em;
+    font-size: 13px;
     margin: 0;
+    border-radius: 6px 0 0 6px;
+}
+
+.search-btn {
+    border-radius: 0 6px 6px 0;
 }
 
 /*To get the button and search bar on the job board to be horizontal*/
@@ -80,21 +93,22 @@ a.active {
     padding-bottom: 20px;
 }
 
-div.portfolio-description h2{
+div.portfolio-description h2 {
     margin-bottom: 10px;
 }
+
 h5.card-title {
     font-size: 16px;
     line-height: 1.5;
     margin-bottom: 0;
 }
+
 p.card-text {
     margin-bottom: .75rem;
     font-size: 13px;
-    
 }
 
-.card.text-center{
+.card.text-center {
     min-height: 273px;
 }
 
@@ -108,7 +122,7 @@ textarea.form-control {
 
 
 /*UserDetails - Details*/
-li.list-group-item{
+li.list-group-item {
     border-bottom-width: 2px !important;
 }
 
@@ -119,12 +133,12 @@ li.list-group-item{
     line-height: 1.5;
 }
 
-.employeeDetails{
+.employeeDetails {
     padding-left: 1px;
     padding-right: 1px;
     padding-top: 1px;
 }
 
-iframe{
+iframe {
     padding-left: 35px;
 }

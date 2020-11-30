@@ -48,6 +48,17 @@ namespace JobBoard.UI.MVC.Controllers
             return View(openPositions.ToPagedList(page, pageSize));
         }
 
+        public ActionResult YourPositions(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var yourPositions = db.OpenPositions.Where(op => op.Location.ManagerId == id);
+            return View(yourPositions.ToList());
+        }
+
         // GET: OpenPositions/Details/5
         [Authorize]
         public ActionResult Details(int? id)

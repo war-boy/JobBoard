@@ -159,7 +159,11 @@ namespace JobBoard.UI.MVC.Controllers
                     userDetails.UserId = user.Id;
                     userDetails.FirstName = model.FirstName;
                     userDetails.LastName = model.LastName;
+                    //userDetails.Location = model.Location;
+                    userDetails.Title = model.Title;
                     userDetails.DateOfHire = model.DateOfHire;
+                    userDetails.VisaStatus = model.VisaStatus;
+                    
 
                     JobBoardEntities db = new JobBoardEntities();
                     db.UserDetails.Add(userDetails);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using JobBoard.DATA.EF;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace JobBoard.UI.MVC.Models
@@ -81,16 +82,38 @@ namespace JobBoard.UI.MVC.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [DisplayFormat(NullDisplayText = "* Employee's First Name is required")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [DisplayFormat(NullDisplayText = "* Employee's Last Name is required")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        //[Required]
+        //[DisplayFormat(NullDisplayText = "* Location is required")]
+        //[Display(Name = "Location")]
+        //public int LocationId { get; set; }
+
+        //public Location Location { get; set; }
+
+        public string Title { get; set; }
+
+        [Display(Name = "Visa Status")]
+        public string VisaStatus { get; set; }
 
         [Display(Name = "Date of Hire")]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public System.DateTime? DateOfHire { get; set; }
+
+        [Display(Name = "Employee Image")]
+        public string UserImage { get; set; }
+
+        [UIHint("Multilinetext")]
+        public string Notes { get; set; }
+
+        
 
 
     }

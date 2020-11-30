@@ -28,40 +28,61 @@
         </ul>
     }
 
-        <div class="card-body">
-            <!-- #region Get current user -->
-            @{
-                JobBoardEntities db = new JobBoardEntities();
+    <div class="card-body">
+        <!-- #region Get current user -->
+        @{
+            JobBoardEntities db = new JobBoardEntities();
 
-                string userID = User.Identity.GetUserId();
+            string userID = User.Identity.GetUserId();
 
-                UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
-            }
-            <!-- #endregion -->
+            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+        }
+        <!-- #endregion -->
 
-            @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
-            {
-                @Html.ActionLink("Edit Informantion", "Edit", new { id = Model.UserId });
-            }
+        @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
+        {
+            @Html.ActionLink("Edit Informantion", "Edit", new { id = Model.UserId });
+        }
 
-            <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
-            @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Manager"))))
-            {
-                <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews | </a>
-            }
+        <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
+        @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Manager"))))
+        {
+            <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews | </a>
+        }
 
-            <!--If this is the view for the current user's details, don't give them the option to contact-->
-            @if ((Model.UserId != currentUser.UserId))
-            {
-                <a href="#" class="card-link">Contact</a>
-            }
+        <!--If this is the view for the current user's details, don't give them the option to contact-->
+        @if ((Model.UserId != currentUser.UserId))
+        {
+            <a href="#" class="card-link">Contact</a>
+        }
 
+    </div>
+</div>
+
+@* 11/28 - Try adding id onto submit button to try to pass the id correctly. Worse cvase scenerio, change it to a comfirmation page *@
+@if (Model.ResumeFileName == null)
+{
+    using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data"}))
+    {
+        <div class="form-group">
+            <h2>You don't have a Resume on file. Click below to upload.</h2>
+            <div class="col-md-3">
+                <input type="file" name="resume" />
+            </div>
+            <div class="col-md-10">
+                <input type="submit" value="AddResume" class="btn btn-primary" />
+            </div>
         </div>
-</div>
+    }
+}
+else
+{
+    <div class="col-md-6">
+        <iframe src="~/Content/resumes/RyanEutslerResumeIT.pdf" width="810" height="900" scrolling="no" frameborder="0"></iframe>
+    </div>
+}
 
-<div class="col-md-6">
-    <iframe src="~/Content/resumes/RyanEutslerResumeIT.pdf" width="810" height="900" scrolling="no" frameborder="0"></iframe>
-</div>
+
 
 <dt>
     @Html.DisplayNameFor(model => model.Notes)

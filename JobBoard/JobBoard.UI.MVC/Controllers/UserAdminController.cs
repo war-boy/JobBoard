@@ -1,4 +1,5 @@
 ﻿using JobBoard.UI.MVC.Models;
+using JobBoard.DATA.EF;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace JobBoard.UI.MVC.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersAdminController : Controller
     {
+        private JobBoardEntities db = new JobBoardEntities();
+
         public UsersAdminController()
         {
         }
@@ -78,6 +81,7 @@ namespace JobBoard.UI.MVC.Controllers
         public async Task<ActionResult> Create()
         {
             //Get the list of Roles
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
             ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
             return View();
         }
@@ -98,10 +102,26 @@ namespace JobBoard.UI.MVC.Controllers
                 {
                     if (selectedRoles != null)
                     {
+                        #region Custom User Details
+                        UserDetail userDetails = new UserDetail();
+                        userDetails.UserId = user.Id;
+                        userDetails.FirstName = userViewModel.FirstName;
+                        userDetails.LastName = userViewModel.LastName;
+                        
+                   
+                        userDetails.Title = userViewModel.Title;
+                        userDetails.DateOfHire = userViewModel.DateOfHire;
+                        userDetails.VisaStatus = userViewModel.VisaStatus;
+
+                        db.UserDetails.Add(userDetails);
+
+                        db.SaveChanges();
+                        #endregion
                         var result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
                         if (!result.Succeeded)
                         {
                             ModelState.AddModelError("", result.Errors.First());
+                            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
                             ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
                             return View();
                         }
@@ -110,14 +130,16 @@ namespace JobBoard.UI.MVC.Controllers
                 else
                 {
                     ModelState.AddModelError("", adminresult.Errors.First());
+                    ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
                     ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
                     return View();
 
                 }
                 return RedirectToAction("Index");
             }
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
             ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-            return View();
+            return View(userViewModel);
         }
 
         //

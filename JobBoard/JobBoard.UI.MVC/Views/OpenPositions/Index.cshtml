@@ -12,13 +12,22 @@
         <div class="container">
             @using (Html.BeginForm("Index", "OpenPositions", FormMethod.Get, new { @class = "" }))
             {
-                <div class="col-md-10 search-container">
-                    @Html.TextBox("SearchString", ViewBag.SearchString as string, new { @class = "form-control input-large", @placeholder = "Search", @id = "search-bar" })
-                    <input type="submit" value="Search" class="btn btn-primary btn-rounded" />
+                <div class="col-md-6 search-container">
+                    @Html.TextBox("SearchString", ViewBag.SearchString as string, new { @class = "form-control input-large", @placeholder = "Search by Keyword", @id = "search-bar" })
+                    <input type="submit" value="Search" class="btn btn-primary search-btn" />
+                </div>
+            }
+
+            @using (Html.BeginForm("Index", "OpenPositions", FormMethod.Get, new { @class = "" }))
+            {
+                <div class="col-md-4 search-container">
+                    @Html.TextBox("SearchString", ViewBag.SearchString as string, new { @class = "form-control input-large", @placeholder = "Search by Location", @id = "search-bar" })
+                    <input type="submit" value="Search" class="btn btn-primary search-btn" />
                 </div>
             }
         </div>
     </div>
+
 }
 
 @if (Model.Count() == 0)
@@ -45,14 +54,15 @@ else
 
                 @if ((Request.IsAuthenticated && item.Location.ManagerId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
                 {
-                    <div class="boardCrud">
-                        @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId })
-                    </div>
+                <div class="boardCrud">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) <i class="fa fa-pencil-square-o" aria-hidden="true"></i> |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId }) <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </div>
                 }
 
             </div>
             <div class="panel-body">
+                <div class="panel-location">@item.Location.FullLocation</div>
                 @Html.DisplayFor(modelItem => item.Position.JobDescription)
             </div>
         </div>
@@ -61,7 +71,7 @@ else
 
 }
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }))
 

@@ -32,7 +32,7 @@
 
                 @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                 {
-                    <li><a href="@Url.Action("Index", "OpenPositions")">Your Positions</a></li>
+                    <li><a href="@Url.Action("YourPositions", "OpenPositions", new { id = currentUser.UserId })">Your Positions</a></li>
                     <li><a href="@Url.Action("Create", "PerformanceReviews")">Performance Reviews</a></li>
                 }
 
