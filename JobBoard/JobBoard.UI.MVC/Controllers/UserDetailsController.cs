@@ -53,7 +53,7 @@ namespace JobBoard.UI.MVC.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             #region FileUpload
             string resumeName;
 
@@ -140,18 +140,45 @@ namespace JobBoard.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail, HttpPostedFileBase resume)
         {
-            if (ModelState.IsValid)
+            if (resume != null && ModelState.IsValid)
             {
+                string resumeName = resume.FileName;
+
+                string ext = resumeName.Substring(resumeName.LastIndexOf('.'));
+
+                string[] validExts = { ".pdf", ".doc", ".docx" };
+
+                if (validExts.Contains(ext.ToLower()) && (resume.ContentLength <= 4194304))//4mb
+                {
+                    resumeName = Guid.NewGuid() + ext.ToLower();
+
+                    string savePath = Server.MapPath("~/Content/resumes");
+
+                    userDetail.ResumeFileName = resumeName;
+
+                }
+
+                //Manual Delete 
+                if (userDetail.ResumeFileName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+                }
+                
+
                 db.Entry(userDetail).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating", userDetail.PerformanceReviewId);
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }
+
+
+
 
         // GET: UserDetails/Delete/5
         public ActionResult Delete(string id)
@@ -187,5 +214,7 @@ namespace JobBoard.UI.MVC.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }
+

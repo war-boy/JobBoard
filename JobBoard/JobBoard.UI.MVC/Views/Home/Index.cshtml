@@ -1,19 +1,78 @@
 ﻿@using JobBoard.DATA.EF;
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Home Page";
 }
 
 @section banner{
-    <section id="hero" class="d-flex align-items-center">
+    <section id="hero" class="d-flex align-items-center index-hero">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
             <h1>
-                Welcome to <span>GlobalSystems </span>Jobs
+                Welcome to <span>GlobalSystems</span>. Jobs
             </h1>
             <h2>Keep it in the family</h2>
             <div class="d-flex">
-                <a href="@Url.Action("About","Home")" class="btn-get-started scrollto">Get Started</a>
-                <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox btn-watch-video" data-vbtype="video" data-autoplay="true"> Watch Video <i class="icofont-play-alt-2"></i></a>
+                <a href="@Url.Action("About","Home")" class="btn-get-started scrollto">About Us</a>
+
             </div>
         </div>
     </section>
+}
+
+@* Put news API here *@
+
+@if (Request.IsAuthenticated)
+{
+
+   
+
+        JobBoardEntities db = new JobBoardEntities();
+
+        string userID = User.Identity.GetUserId();
+
+        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+    
+
+    <h2>Quick Links</h2>
+    <section id="featured-services" class="featured-services">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+                        <div class="icon"><i class="bx bx-world"></i></div>
+                        <h4 class="title"><a href="@Url.Action("Index", "Locations")">Locations</a></h4>
+                        <p class="description">Browse all of Global Systems locations and learn more about their opportunities.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+                        <div class="icon"><i class="far fa-id-badge"></i></div>
+                        <h4 class="title"><a href="@Url.Action("Details", "UserDetails")/@currentUser.UserId">Profile</a></h4>
+                        <p class="description">View your employee profile and customize it to appeal to more hiring managers.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
+                        <div class="icon"><i class="fas fa-briefcase"></i></div>
+                        <h4 class="title"><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></h4>
+                        <p class="description">View all the job opportunities Global Systems has to offer across the world!</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                    <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
+                        <div class="icon"><i class="far fa-question-circle"></i></div>
+                        <h4 class="title"><a href="">Help</a></h4>
+                        <p class="description">Can't find what you're looking for? Have an error you need to report? Reach out to us about any questions or concerns.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Featured Services Section -->
+
 }

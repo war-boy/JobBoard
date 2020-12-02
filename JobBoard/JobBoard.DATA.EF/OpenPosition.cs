@@ -23,7 +23,7 @@ namespace JobBoard.DATA.EF
         public int OpenPositionId { get; set; }
         public int LocationId { get; set; }
         public int PositionId { get; set; }
-        public bool IsRemote { get; set; }
+        public bool? IsRemote { get; set; }
         public string EmploymentType { get; set; }
         public string Duration { get; set; }
     

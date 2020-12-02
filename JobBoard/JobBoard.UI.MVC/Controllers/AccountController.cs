@@ -7,12 +7,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace JobBoard.UI.MVC.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
+        private JobBoardEntities db = new JobBoardEntities();
+
         public AccountController()
         {
         }
@@ -134,17 +137,16 @@ namespace JobBoard.UI.MVC.Controllers
 
         //
         // GET: /Account/Register
-        [HttpGet]
-        [Authorize]
+        [HttpGet]        
         public ActionResult Register()
         {
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
             return View();
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -154,31 +156,51 @@ namespace JobBoard.UI.MVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    #region Custom User Details
-                    UserDetail userDetails = new UserDetail();
-                    userDetails.UserId = user.Id;
-                    userDetails.FirstName = model.FirstName;
-                    userDetails.LastName = model.LastName;
-                    //userDetails.Location = model.Location;
-                    userDetails.Title = model.Title;
-                    userDetails.DateOfHire = model.DateOfHire;
-                    userDetails.VisaStatus = model.VisaStatus;
-                    
+                    //All users will automatically be registered as employees until the admin has changed it
+                    UserManager.AddToRole(user.Id, "Employee");
 
-                    JobBoardEntities db = new JobBoardEntities();
-                    db.UserDetails.Add(userDetails);
-                    db.SaveChanges();
+                    #region Custom User Details
+                    UserDetail userDetails = new UserDetail()
+                    {
+                        UserId = user.Id,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        LocationId = model.LocationId,
+                        Title = model.Title,
+                        DateOfHire = model.DateOfHire,
+                        VisaStatus = model.VisaStatus,
+                        IsOpenToRelocation = false,
+                        IsOpenToNewOpps = false
+                        
+                    };
                     #endregion
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
-                }
+                    JobBoardEntities db = new JobBoardEntities();
+                    try
+                    {
+                        db.UserDetails.Add(userDetails);
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        foreach (var eve in e.EntityValidationErrors)
+                        {
+                            Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                Debug.WriteLine("- Property: \"{0}\", Value: \"{1}\", Error: \"{2}\"",
+                                    ve.PropertyName,
+                                    eve.Entry.CurrentValues.GetValue<object>(ve.PropertyName),
+                                    ve.ErrorMessage);
+                            }
+                        }
+                    }
+                    
+                }  
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
             return View(model);
         }
 

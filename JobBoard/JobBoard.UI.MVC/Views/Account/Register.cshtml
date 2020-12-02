@@ -3,7 +3,15 @@
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </section>
+}
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -42,9 +50,34 @@
         </div>
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.LocationId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control form-control-lg" })
+        </div>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.DateOfHire, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.DateOfHire, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.DateOfHire, new { @class = "form-control datepicker" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.VisaStatus, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.VisaStatus, new SelectList(new[] {
+                           new { Value = "null", Text = "Not Disclosed" },
+                           new { Value = "Citizen", Text = "US Citizen" },
+                           new { Value = "GreenCard", Text = "Green Card" },
+                           new { Value = "H1-B", Text = "H1-B" },
+                           new { Value = "OPT", Text = "OPT" },
+                           new { Value = "TN", Text = "TN Visa" },
+                           new { Value = "Other", Text = "Other" }, }, "Value", "Text", Model), new { htmlAttributes = new { @class = "form-control" } })
         </div>
     </div>
     <div class="form-group">
@@ -56,4 +89,19 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=text]').datepicker({
+                dateFormat: "MM/dd/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+        });
+    </script>
 }
+

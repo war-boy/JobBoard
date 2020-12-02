@@ -27,6 +27,7 @@ namespace JobBoard.DATA.EF
         public string City { get; set; }
         public string State { get; set; }
         public string ManagerId { get; set; }
+        public string LocationImage { get; set; }
     
         public virtual UserDetail UserDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

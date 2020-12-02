@@ -16,10 +16,13 @@
 
         string userName = "Guest";
 
-
         if (currentUser != null)
         {
             userName = currentUser.FirstName;
+        }
+        else
+        {
+            userName = "Guest";
         }
 
 
@@ -28,7 +31,7 @@
             <ul>
                 <li><a href="@Url.Action("Details", "UserDetails")/@currentUser.UserId">Profile</a></li>
 
-                <li><a href="@Url.Action("Index", "Applications", new { id = currentUser.UserId })">Your Applications</a></li>
+                <li><a href="@Url.Action("YourApplications", "Applications", new { id = currentUser.UserId })">Your Applications</a></li>
 
                 @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                 {

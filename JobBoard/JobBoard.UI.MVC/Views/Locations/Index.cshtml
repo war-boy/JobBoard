@@ -5,15 +5,25 @@
 }
 
 @section banner{
-    <section id="hero" class="d-flex align-items-center">
+    <section id="hero" class="d-flex align-items-center location-hero">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
             <h1>
-                Welcome to <span>GlobalSystems </span>Jobs
+                Welcome to <span>GlobalSystems</span>. Jobs
             </h1>
             <h2>Keep it in the family</h2>
             <div class="d-flex">
-                <a href="@Url.Action("About","Home")" class="btn-get-started scrollto">Get Started</a>
+                <a href="@Url.Action("About","Home")" class="btn-get-started scrollto">About Us</a>
                 <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox btn-watch-video" data-vbtype="video" data-autoplay="true"> Watch Video <i class="icofont-play-alt-2"></i></a>
+            </div>
+        </div>
+    </section>
+}
+
+@section head{
+    <section class="breadcrumbs">
+        <div class="container offset-1">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
             </div>
         </div>
     </section>
@@ -22,45 +32,27 @@
 
 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
 {
-    <a href="@Url.Action("Create", "Create")" class="btn btn-primary">Create New</a>
+    <a href="@Url.Action("Create", "Locations")" class="btn btn-primary" style="margin-bottom: 20px;">Add New</a>
 }
 
-<table class="table display" id="table_id">
-    <thead>
-        <tr>
-            <th>
-                Location
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreNumber)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="card location-card">
+            <div class="card-body">
+                <div class="col-md-6" style="height: 100%;">
+                    <h2 class="card-title">@Html.DisplayFor(modelItem => item.FullLocation)</h2>
+                    <p class="card-text">@Html.DisplayNameFor(model => model.StoreNumber): @Html.DisplayFor(model => item.StoreNumber)</p>
+                    <div style="position: absolute; bottom: 0px;">
+                        <a href="#" class="btn btn-primary">View Positions</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img class="card-img-top location-img-card" src="~/Content/locationImages/@Html.DisplayFor(modelItem => item.LocationImage)" />
+                </div>
+            </div>
 
-    @foreach (var item in Model)
-    {
-    <tbody>       
-        <tr>
-            <td>
-                <a href="@Url.Action("Details", new { id=item.LocationId })">
-                    @Html.DisplayFor(modelItem => item.FullLocation)
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreNumber)
-            </td>
-        </tr>
-    </tbody>
-    }
+        </div>
+    </div>
+}
 
-</table>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function () {
-        $('#table_id').DataTable();
-    });
-</script>

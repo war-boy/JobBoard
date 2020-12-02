@@ -7,7 +7,15 @@
 }
 
 <div class="card col-md-6 employeeDetails" style="width: 22rem;">
-    <img class="card-img-top" src="~/Content/employeeImages/photo-1568493021943-4077b55c95a3.jpg" alt="Card image cap">
+    @if (Model.UserImage != null)
+    {
+        <img class="card-img-top" src="~/Content/employeeImages/@Model.UserImage" alt="@Model.FullName">
+    }
+    else
+    {
+        <img class="card-img-top" src="~/Content/employeeImages/no-user-img.png" alt="@Model.FullName">
+    }
+
     <div class="card-body">
         <h5 class="card-title">@Html.DisplayFor(model => model.FullName)</h5>
         <p class="card-text">@Html.DisplayFor(model => model.Title)<br />@Html.DisplayFor(model => model.Location.FullLocation)</p>
@@ -18,12 +26,13 @@
         <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.Email):</b><br /> @Html.DisplayFor(model => model.AspNetUser.Email)</li>
         <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber):</b><br /> @Html.DisplayFor(model => model.AspNetUser.PhoneNumber)</li>
     </ul>
-    @if (Model.IsOpenToNewOpps)
+
+    @if ((bool)Model.IsOpenToNewOpps)
     {
         <ul class="list-group list-group-flush">
             <li class="list-group-item openOpps">Open to new Opportunities</li>
             <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.EmploymentType):</b><br /> @Html.DisplayFor(model => model.EmploymentType)</li>
-            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.IsOpenToRelocation):</b><br /> @(Model.IsOpenToRelocation ? "Yes" : "No")</li>
+            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.IsOpenToRelocation):</b><br /> @((bool)Model.IsOpenToRelocation ? "Yes" : "No")</li>
             <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.VisaStatus):</b><br /> @Html.DisplayFor(model => model.VisaStatus)</li>
         </ul>
     }
@@ -41,7 +50,7 @@
 
         @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
         {
-            @Html.ActionLink("Edit Informantion", "Edit", new { id = Model.UserId });
+            @Html.ActionLink("Edit Information", "Edit", new { id = Model.UserId });
         }
 
         <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
@@ -59,7 +68,6 @@
     </div>
 </div>
 
-@* 11/28 - Try adding id onto submit button to try to pass the id correctly. Worse cvase scenerio, change it to a comfirmation page *@
 @if (Model.ResumeFileName == null)
 {
     using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data"}))
@@ -70,7 +78,7 @@
                 <input type="file" name="resume" />
             </div>
             <div class="col-md-10">
-                <input type="submit" value="AddResume" class="btn btn-primary" />
+                <input type="submit" value="Add Resume" class="btn btn-primary" />
             </div>
         </div>
     }
@@ -78,17 +86,8 @@
 else
 {
     <div class="col-md-6">
-        <iframe src="~/Content/resumes/RyanEutslerResumeIT.pdf" width="810" height="900" scrolling="no" frameborder="0"></iframe>
+        <iframe src="~/Content/resumes/@Model.ResumeFileName" width="810" height="900" scrolling="no" frameborder="0"></iframe>
     </div>
 }
 
-
-
-<dt>
-    @Html.DisplayNameFor(model => model.Notes)
-</dt>
-
-<dd>
-    @Html.DisplayFor(model => model.Notes)
-</dd>
 

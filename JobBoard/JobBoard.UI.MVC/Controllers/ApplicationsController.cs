@@ -16,8 +16,16 @@ namespace JobBoard.UI.MVC.Controllers
         private JobBoardEntities db = new JobBoardEntities();
 
         // GET: Applications
-        //[Authorize(Roles = "Admin, Manager")]
-        public ActionResult Index(string id)
+        [Authorize(Roles = "Admin, Manager")]
+        public ActionResult Index()
+        {
+            var applications = db.Applications.Include(a => a.ApplicationStatu).Include(a => a.OpenPosition).Include(a => a.UserDetail);
+            return View(applications.ToList());
+
+        }
+
+        //Get list of all of applications created by the current user
+        public ActionResult YourApplications(string id)
         {
             if (id == null)
             {
@@ -32,9 +40,10 @@ namespace JobBoard.UI.MVC.Controllers
 
             var yourApplications = db.Applications.Where(a => a.UserId == id);
             return View(yourApplications.ToList());
-           
+
         }
 
+        //Get list of all applications sent for the given OpenPosition
         public ActionResult PositionApplications(int? id)
         {
             if (id == null)

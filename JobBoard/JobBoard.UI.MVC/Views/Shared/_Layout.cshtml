@@ -43,8 +43,17 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <!--Date Picker-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    
+
     <!--Custom CSS-->
     <link href="~/Content/Custom.css" rel="stylesheet" />
+
+
 
     <!-- =======================================================
     * Template Name: BizLand - v1.1.1
@@ -64,7 +73,6 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul id="responsive-nav">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Locations")">Locations</a></li>
                     <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                     {
@@ -189,6 +197,10 @@
     <!--Datatables-->
     <script src="~/Content/datatables/datatables.min.js"></script>
     <script src="~/Content/datatables/datatables.js"></script>
+
+    <!--jQuery UI (Date Picker)-->
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
 
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@

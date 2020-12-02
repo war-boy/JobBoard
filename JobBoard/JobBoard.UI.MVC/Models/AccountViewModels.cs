@@ -91,10 +91,10 @@ namespace JobBoard.UI.MVC.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        //[Required]
-        //[DisplayFormat(NullDisplayText = "* Location is required")]
-        //[Display(Name = "Location")]
-        //public int LocationId { get; set; }
+        [Required]
+        [DisplayFormat(NullDisplayText = "* Location is required")]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
 
         //public Location Location { get; set; }
 

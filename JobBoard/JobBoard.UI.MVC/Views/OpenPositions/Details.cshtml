@@ -18,7 +18,7 @@
 
                 <h5 class="card-title">@Html.DisplayNameFor(model => model.LocationId)</h5>
 
-                @if (Model.IsRemote)
+                @if ((bool)(Model.IsRemote))
                 {
                     <p class="card-text">Remote</p>
                 }

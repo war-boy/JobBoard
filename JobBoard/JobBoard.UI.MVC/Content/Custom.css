@@ -24,6 +24,8 @@ a.active {
 }
 
 
+
+
 .customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary {
     font-size: 15px;
     font-weight: 400;
@@ -141,4 +143,17 @@ li.list-group-item {
 
 iframe {
     padding-left: 35px;
+}
+
+/*Locations*/
+
+.location-img-card {
+    float: right;
+    width: 650px;
+    height: 350px;
+}
+
+.location-card {
+    width: -webkit-fill-available;
+    margin-bottom: 20px;
 }

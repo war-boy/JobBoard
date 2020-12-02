@@ -95,6 +95,7 @@
           <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="State" Type="char" MaxLength="2" Nullable="false" />
           <Property Name="ManagerId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LocationImage" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="OpenPositions">
           <Key>
@@ -487,6 +488,7 @@
           <NavigationProperty Name="OpenPositions" Relationship="Self.FK_OpenPositions_Locations" FromRole="Locations" ToRole="OpenPositions" />
           <NavigationProperty Name="PerformanceViews" Relationship="Self.FK_PerformanceViews_Locations" FromRole="Locations" ToRole="PerformanceViews" />
           <NavigationProperty Name="UserDetails" Relationship="JobBoardModel.FK_UserDetails_Locations" FromRole="Location" ToRole="UserDetail" />
+          <Property Name="LocationImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="OpenPosition">
           <Key>
@@ -862,6 +864,7 @@
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="JobBoardModel.Location">
               <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="LocationImage" ColumnName="LocationImage" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="StoreNumber" ColumnName="StoreNumber" />
                 <ScalarProperty Name="City" ColumnName="City" />
