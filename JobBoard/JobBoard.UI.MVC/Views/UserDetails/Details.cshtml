@@ -27,7 +27,7 @@
         <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber):</b><br /> @Html.DisplayFor(model => model.AspNetUser.PhoneNumber)</li>
     </ul>
 
-    @if ((bool)Model.IsOpenToNewOpps)
+    @if ((bool)Model.IsOpenToNewOpps && Model.IsOpenToNewOpps != null)
     {
         <ul class="list-group list-group-flush">
             <li class="list-group-item openOpps">Open to new Opportunities</li>
@@ -70,15 +70,17 @@
 
 @if (Model.ResumeFileName == null)
 {
-    using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data"}))
+    using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <div class="form-group">
-            <h2>You don't have a Resume on file. Click below to upload.</h2>
-            <div class="col-md-3">
-                <input type="file" name="resume" />
-            </div>
-            <div class="col-md-10">
-                <input type="submit" value="Add Resume" class="btn btn-primary" />
+        <div class="col-md-9">
+            <div class="card resume-card">
+                <div class="card-body">
+                    <h2>You Currently don't have a Resume on File. Click Below to Upload your .pdf File.</h2>
+                    <input type="file" name="resume" />
+                    <input type="submit" value="Upload Resume" class="btn btn-primary" />
+                    <h5 style="color: red;">@ViewBag.Message</h5>
+
+                </div>
             </div>
         </div>
     }

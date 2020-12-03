@@ -20,9 +20,10 @@ namespace JobBoard.DATA.EF
         public string ResumeFileName { get; set; }
 
         [Display(Name = "Open to relocation?")]
+        [DisplayFormat(NullDisplayText = "False")]
         public bool IsOpenToRelocation { get; set; }
 
-       
+        [DisplayFormat(NullDisplayText = "* Title not Provided")]
         public string Title { get; set; }
 
         [Display(Name = "Open to what employment types?")]
@@ -33,7 +34,7 @@ namespace JobBoard.DATA.EF
 
         
         [Display(Name = "Date of Hire")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true, NullDisplayText = "Not Provided")]
         public System.DateTime? DateOfHire { get; set; }
 
         [UIHint("Multilinetext")]
@@ -42,7 +43,7 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Employee Image")]
         public string UserImage { get; set; }
 
-        [DisplayFormat(NullDisplayText = "* Please Choose an Option")]
+        [DisplayFormat(NullDisplayText = "False")]
         public bool IsOpenToNewOpps { get; set; }
 
     }

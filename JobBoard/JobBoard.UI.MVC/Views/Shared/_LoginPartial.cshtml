@@ -2,28 +2,28 @@
 @using JobBoard.DATA.EF;
 @if (Request.IsAuthenticated)
 {
-
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
-
-        JobBoardEntities db = new JobBoardEntities();
-
-        string userID = User.Identity.GetUserId();
-
-        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
-
-
-        string userName = "Guest";
-
-        if (currentUser != null)
+    <li>
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
         {
-            userName = currentUser.FirstName;
-        }
-        else
-        {
-            userName = "Guest";
-        }
+            @Html.AntiForgeryToken()
+
+            JobBoardEntities db = new JobBoardEntities();
+
+            string userID = User.Identity.GetUserId();
+
+            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+
+
+            string userName = "Guest";
+
+            if (currentUser != null)
+            {
+                userName = currentUser.FirstName;
+            }
+            else
+            {
+                userName = "Guest";
+            }
 
 
         <li class="drop-down">
@@ -54,19 +54,20 @@
             </ul>
         </li>
     }
-}
-else
-{
-    <li>
-        <a href="/Account/Register" id="registerLink">
-            Register
-            <i class="fa fa-user-plus" aria-hidden="true"></i>
-        </a>
-    </li>
-    <li>
-        <a href="/Account/Login" id="loginLink">
-            Login
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-        </a>
-    </li>
-}
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="/Account/Register" id="registerLink">
+                Register
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li>
+            <a href="/Account/Login" id="loginLink">
+                Login
+                <i class="fa fa-sign-in" aria-hidden="true"></i>
+            </a>
+        </li>
+    }

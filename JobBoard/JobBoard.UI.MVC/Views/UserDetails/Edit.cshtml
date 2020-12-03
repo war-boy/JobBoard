@@ -1,4 +1,6 @@
-﻿@model JobBoard.DATA.EF.UserDetail
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model JobBoard.DATA.EF.UserDetail
 
 @{
     ViewBag.Title = "Edit";
@@ -14,67 +16,103 @@
     </section>
 }
 
-@using (Html.BeginForm("Edit", "UserDetails", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "UserDetails", new { id = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+    <!-- #region Get current user -->
+
+    JobBoardEntities db = new JobBoardEntities();
+
+    string userID = User.Identity.GetUserId();
+
+    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+
+    <!-- #endregion -->
+
 
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.UserId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.HiddenFor(model => Model.ResumeFileName)
-        <div class="form-group">
-            @Html.LabelFor(model => model.ResumeFileName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <label>Upload new resume: </label><input type="file" name="resume" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsOpenToRelocation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsOpenToRelocation)
-                    @Html.ValidationMessageFor(model => model.IsOpenToRelocation, "", new { @class = "text-danger" })
+        <!--Only Admins, Employees (who were able to access this action), and managers IF this is their information-->
+        @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Employee") || Request.IsAuthenticated && User.IsInRole("Manager") && currentUser.UserId == Model.UserId)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmploymentType, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.VisaStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VisaStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VisaStatus, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsOpenToNewOpps, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsOpenToNewOpps)
+                        @Html.ValidationMessageFor(model => model.IsOpenToNewOpps, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
-        </div>
 
-        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-        {
+            @Html.HiddenFor(model => Model.ResumeFileName)
+            <div class="form-group">
+                @Html.LabelFor(model => model.ResumeFileName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label>Upload new resume: </label><input type="file" name="resume" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsOpenToRelocation, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.IsOpenToRelocation)
+                        @Html.ValidationMessageFor(model => model.IsOpenToRelocation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.EmploymentType, new SelectList(new[] {
+                           new { Value = "NULL", Text = "Not Specified" },
+                           new { Value = "Contract", Text = "Contract" },
+                           new { Value = "ContractToHire", Text = "Contract To Hire" },
+                           new { Value = "Permanent", Text = "Permanent" },
+                           new { Value = "Full-Time", Text = "Full-Time" },
+                           new { Value = "Part-Time", Text = "Part-Time" },
+                           }, "Value", "Text", Model), new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.VisaStatus, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.VisaStatus, new SelectList(new[] {
+                                   new { Value = "NULL", Text = "Not Specified" },
+                                   new { Value = "Citizen", Text = "US Citizen" },
+                                   new { Value = "GreenCard", Text = "Green Card" },
+                                   new { Value = "H1-B", Text = "H1-B" },
+                                   new { Value = "OPT", Text = "OPT" },
+                                   new { Value = "TN", Text = "TN Visa" },
+                                   new { Value = "Other", Text = "Other" }, }, "Value", "Text", Model), new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -98,7 +136,10 @@
                     @Html.ValidationMessageFor(model => model.UserImage, "", new { @class = "text-danger" })
                 </div>
             </div>
+        }
 
+        @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
+        {
             <div class="form-group">
                 @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -115,7 +156,7 @@
         </div>
     </div>
 }
-    
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

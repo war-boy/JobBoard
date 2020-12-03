@@ -126,6 +126,7 @@ textarea.form-control {
 /*UserDetails - Details*/
 li.list-group-item {
     border-bottom-width: 2px !important;
+    font-size: 11px;
 }
 
 .openOpps {
@@ -145,8 +146,20 @@ iframe {
     padding-left: 35px;
 }
 
-/*Locations*/
+.resume-card {
+    text-align: center;
+    width: max-content;
+}
+    .resume-card h2 {
+        padding-bottom: 10px;
+    }
 
+    .resume-card input[type="file"] {
+        display: -webkit-inline-box;
+        padding-right: inherit;
+    }
+
+/*Locations*/
 .location-img-card {
     float: right;
     width: 650px;
