@@ -179,6 +179,7 @@ namespace JobBoard.UI.MVC.Controllers
                     {
                         db.UserDetails.Add(userDetails);
                         db.SaveChanges();
+                        return RedirectToAction("Login");
                     }
                     catch (DbEntityValidationException e)
                     {

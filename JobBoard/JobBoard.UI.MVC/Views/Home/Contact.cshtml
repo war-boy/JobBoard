@@ -1,20 +1,68 @@
-﻿@{
-    ViewBag.Title = "Contact";
-}
-<hgroup>
-    <h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
-</hgroup>
-<div>
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model JobBoard.UI.MVC.Models.ContactViewModel
 
-    <address>
-        <i class="icon-envelope"></i><strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <i class="icon-envelope"></i><strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</div>
+@{
+    //Get the Sender's and Receiver's UserDetails from the ViewBag and store as local variables
+    UserDetail sender = ViewBag.Sender;
+    UserDetail receiver = ViewBag.Receiver;
+    ViewBag.Title = $"Contact {receiver.FirstName}";
+}
+
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </section>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="contact-form">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("SenderName", sender.FullName)
+        @Html.Hidden("ReceiverEmail", receiver.AspNetUser.Email)
+        @Html.Hidden("SenderEmail", sender.AspNetUser.Email)
+        @Html.Hidden("ReceiverId", receiver.UserId)
+        @Html.Hidden("ReceiverName", receiver.FullName)
+
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @placeholder = "Subject" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-10 contact">
+                <input type="submit" value="Send" class="btn btn-primary" />
+                <a href="@Url.Action("Details", "UserDetails", new { id = receiver.UserId })" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (ViewBag.CustomerMessage != null)
+{
+    <h4>@Html.Raw(ViewBag.CustomerMessage)</h4>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

@@ -20,7 +20,7 @@ namespace JobBoard.UI.MVC.Controllers
 
         // GET: OpenPositions
         [Authorize]
-        public ActionResult Index(string searchString, string currentFilter, int page = 1)
+        public ActionResult Index(int? locationId, string searchString, string currentFilter, int page = 1)
         {
             int pageSize = 10;
 
@@ -44,6 +44,12 @@ namespace JobBoard.UI.MVC.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
+
+            if (locationId != null)
+            {
+                var openPositionsByLocation = db.OpenPositions.Where(op => op.LocationId == locationId).ToList();
+                return View(openPositionsByLocation.ToPagedList(page, pageSize));
+            }
 
             return View(openPositions.ToPagedList(page, pageSize));
         }

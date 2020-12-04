@@ -51,6 +51,7 @@ namespace JobBoard.DATA.EF
     [MetadataType(typeof(UserDetailMetadata))]
     public partial class UserDetail 
     {
+        [Display(Name = "Name")]
         public string FullName
         {
             get { return $"{FirstName} {LastName}"; }

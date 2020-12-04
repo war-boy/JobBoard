@@ -22,19 +22,19 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         // GET: Locations/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Location location = db.Locations.Find(id);
-            if (location == null)
-            {
-                return HttpNotFound();
-            }
-            return View(location);
-        }
+        //public ActionResult OpenPositionsAtLocation(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Location location = db.Locations.Find(id);
+        //    if (location == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(location);
+        //}
 
         // GET: Locations/Create
         [Authorize(Roles = "Admin")]

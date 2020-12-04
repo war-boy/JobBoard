@@ -74,6 +74,7 @@
                 <ul id="responsive-nav">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
                     <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
+                    <li><a href="@Url.Action("Index", "UserDetails")">Employee Directory</a></li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
                     {
                         <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>

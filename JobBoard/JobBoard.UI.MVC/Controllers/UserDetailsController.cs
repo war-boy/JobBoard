@@ -179,7 +179,7 @@ namespace JobBoard.UI.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            TempData["message"] = "There was an error uploading your resume. Please try againlater or contact IT User Support.";
+            TempData["message"] = "There was an error uploading your resume. Please try again later or contact IT User Support.";
             return RedirectToAction("Details", new { ID = id });
         }
 

@@ -24,9 +24,7 @@ a.active {
 }
 
 
-
-
-.customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary {
+.customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary, a.btn-danger {
     font-size: 15px;
     font-weight: 400;
     line-height: 1.5;
@@ -40,6 +38,11 @@ a.active {
 }
 
 /*Job Board*/
+
+div.panel-primary {
+    border-top-width: 0px;
+}
+
 .panel-body {
     line-height: 24px;
     font-size: 14px;
@@ -150,8 +153,9 @@ iframe {
     text-align: center;
     width: max-content;
 }
+
     .resume-card h2 {
-        padding-bottom: 10px;
+        padding: 10px;
     }
 
     .resume-card input[type="file"] {
@@ -169,4 +173,16 @@ iframe {
 .location-card {
     width: -webkit-fill-available;
     margin-bottom: 20px;
+}
+
+/*Contact Form*/
+
+.contact-form input.form-control {
+    max-width: none;
+    font-size: 18px;
+}
+
+.contact-form textarea {
+    max-width: none;
+    font-size: 15px;
 }

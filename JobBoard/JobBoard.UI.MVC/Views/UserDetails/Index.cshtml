@@ -12,37 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ResumeFileName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsOpenToRelocation)
+            @Html.DisplayNameFor(model => model.FullName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EmploymentType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VisaStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfHire)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserImage)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PerformanceView.PerformanceRating)
+            <label>Office</label>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AspNetUser.Email)
@@ -53,37 +29,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ResumeFileName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsOpenToRelocation)
+            @Html.DisplayFor(modelItem => item.FullName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EmploymentType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VisaStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfHire)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Notes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserImage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PerformanceView.PerformanceRating)
+            @Html.DisplayFor(modelItem => item.Location.FullLocation)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AspNetUser.Email)

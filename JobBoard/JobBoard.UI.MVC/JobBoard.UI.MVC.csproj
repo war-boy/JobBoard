@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
+    <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -558,6 +559,7 @@
     <Content Include="Views\OpenPositions\ApplicationConfirm.cshtml" />
     <Content Include="Views\OpenPositions\YourPositions.cshtml" />
     <Content Include="Views\Applications\PositionApplications.cshtml" />
+    <Content Include="Views\Home\MessageConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

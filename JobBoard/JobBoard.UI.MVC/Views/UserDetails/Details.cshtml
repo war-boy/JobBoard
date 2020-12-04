@@ -56,13 +56,13 @@
         <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
         @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Manager"))))
         {
-            <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews | </a>
+            <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews </a>
         }
 
-        <!--If this is the view for the current user's details, don't give them the option to contact-->
-        @if ((Model.UserId != currentUser.UserId))
+        <!--If this ISN'T the Details View for the current user's details AND the user you are attempting to has a valid email, give them the option to contact-->
+        @if ((Model.UserId != currentUser.UserId) && (Model.AspNetUser.Email != null))
         {
-            <a href="#" class="card-link">Contact</a>
+            <a href="@Url.Action("Contact", "Home", new { senderId = currentUser.UserId, receiverId = Model.UserId})" class="card-link">Contact</a>
         }
 
     </div>
@@ -70,16 +70,28 @@
 
 @if (Model.ResumeFileName == null)
 {
-    using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    if (Model.UserId == currentUser.UserId)
+    {
+        using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="col-md-9">
+                <div class="card resume-card">
+                    <div class="card-body">
+                        <h2>You Currently do not have a Resume on File. Click Below to Upload your .pdf File.</h2>
+                        <input type="file" name="resume" />
+                        <input type="submit" value="Upload Resume" class="btn btn-primary" />
+                        <h5 style="color: red;">@ViewBag.Message</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
     {
         <div class="col-md-9">
             <div class="card resume-card">
                 <div class="card-body">
-                    <h2>You Currently don't have a Resume on File. Click Below to Upload your .pdf File.</h2>
-                    <input type="file" name="resume" />
-                    <input type="submit" value="Upload Resume" class="btn btn-primary" />
-                    <h5 style="color: red;">@ViewBag.Message</h5>
-
+                    <h2>@Model.FirstName does not have and Resume on file.</h2>
                 </div>
             </div>
         </div>

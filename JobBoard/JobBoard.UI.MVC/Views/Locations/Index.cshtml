@@ -44,7 +44,7 @@
                     <h2 class="card-title">@Html.DisplayFor(modelItem => item.FullLocation)</h2>
                     <p class="card-text">@Html.DisplayNameFor(model => model.StoreNumber): @Html.DisplayFor(model => item.StoreNumber)</p>
                     <div style="position: absolute; bottom: 0px;">
-                        <a href="#" class="btn btn-primary">View Positions</a>
+                        <a href="@Url.Action("Index", "OpenPositions", new { locationId = item.LocationId })" class="btn btn-primary">View Positions</a>
                     </div>
                 </div>
                 <div class="col-md-6">
