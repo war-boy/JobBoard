@@ -24,7 +24,7 @@ a.active {
 }
 
 
-.customMain p, .customMain option, .customMain select, .customMain input, a.btn-primary, a.btn-danger {
+.customMain p, .customMain option, .customMain select, .customMain input, .btn-primary, a.btn-danger {
     font-size: 15px;
     font-weight: 400;
     line-height: 1.5;
@@ -89,14 +89,21 @@ div.panel-heading a {
     border-radius: 0 6px 6px 0;
 }
 
+.applied-btn {
+    cursor: default !important;
+}
+
+    .applied-btn:hover, .applied-btn:hover:active {
+    }
+
 /*To get the button and search bar on the job board to be horizontal*/
 .search-container {
     display: flex;
 }
 
-.bottom-link {
+/*.bottom-link {
     padding-bottom: 20px;
-}
+}*/
 
 div.portfolio-description h2 {
     margin-bottom: 10px;
@@ -143,15 +150,22 @@ li.list-group-item {
     padding-left: 1px;
     padding-right: 1px;
     padding-top: 1px;
+    width: 22rem;
 }
 
-iframe {
+.resume-iframe {
     padding-left: 35px;
 }
+
+    .resume-iframe a.btn {
+        float: right;
+        margin-top: 1em;
+    }
 
 .resume-card {
     text-align: center;
     width: max-content;
+    padding-left: 35px;
 }
 
     .resume-card h2 {

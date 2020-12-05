@@ -48,7 +48,7 @@ else
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <a href="@Url.Action("Details", new { id = item.OpenPositionId })">
+                <a href="@Url.Action("Details", new { id = item.OpenPositionId, userId = currentUser.UserId })">
                     @Html.DisplayFor(modelItem => item.Position.Title) - @Html.DisplayFor(modelItem => item.OpenPositionId)
                 </a>
 

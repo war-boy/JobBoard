@@ -40,20 +40,20 @@ namespace JobBoard.UI.MVC.Controllers
             return View(userDetail);
         }
 
-        public ActionResult AddResume(string id, HttpPostedFileBase resume)
+        public ActionResult AddResume(string userViewId, HttpPostedFileBase resume)
         {
-            if (id == null)
+            if (userViewId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            UserDetail userDetail = db.UserDetails.Find(id);
+            UserDetail userDetail = db.UserDetails.Find(userViewId);
             if (userDetail == null)
             {
                 return HttpNotFound();
             }
 
-            #region FileUpload
+            #region Resume File Upload
             string resumeName;
 
             if (resume != null)
@@ -62,7 +62,7 @@ namespace JobBoard.UI.MVC.Controllers
 
                 string ext = resumeName.Substring(resumeName.LastIndexOf('.'));
 
-                string[] validExts = { ".pdf"};
+                string[] validExts = { ".pdf" };
 
                 if (validExts.Contains(ext.ToLower()) && (resume.ContentLength <= 4194304))//4mb
                 {
@@ -75,8 +75,8 @@ namespace JobBoard.UI.MVC.Controllers
                 }
                 else
                 {
-                    TempData["message"] = "Your resume was not uploaded correctely, please try a different file type (only .pdf files are accepted)";
-                    return RedirectToAction("Details", new { ID = id });
+                    TempData["message"] = "Your resume was not uploaded correctly, please try a different file type (only .pdf files are accepted)";
+                    return RedirectToAction("Details", new { id = userViewId });
                 }
 
                 userDetail.ResumeFileName = resumeName;
@@ -84,13 +84,44 @@ namespace JobBoard.UI.MVC.Controllers
 
                 db.Entry(userDetail).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", new { ID = id });               
+                return RedirectToAction("Details", new { id = userViewId });
             }
 
-            TempData["message"] = "There was an error uploading your resume. Please try againlater or contact IT User Support.";
-            return RedirectToAction("Details", new { ID = id });
+            TempData["message"] = "There was an error uploading your resume. Please try again later or contact IT User Support.";
+            return RedirectToAction("Details", new { id = userViewId });
         }
 
+        public ActionResult DeleteResume(string userViewId)
+        {
+            if (userViewId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            UserDetail userDetail = db.UserDetails.Find(userViewId);
+            if (userDetail == null)
+            {
+                return HttpNotFound();
+            }
+
+            userDetail.ResumeFileName = null;
+
+            //db.UserDetails.Remove(userDetail.ResumeFileName);
+
+            db.Entry(userDetail).State = EntityState.Modified;
+
+            // Manual Delete
+            if (userDetail.ResumeFileName != null)
+            {
+                System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+            }
+
+            db.SaveChanges();
+            TempData["message"] = "Your Resume was successfully deleted.";
+            return RedirectToAction("Details", new { id = userViewId });
+        }
+
+        
         // GET: UserDetails/Create
         public ActionResult Create()
         {
@@ -142,48 +173,89 @@ namespace JobBoard.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail, HttpPostedFileBase resume, string id)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail, HttpPostedFileBase resume, HttpPostedFileBase userImg, string userViewId)
         {
-            if (resume != null && ModelState.IsValid)
+          
+            if (ModelState.IsValid)
             {
-                string resumeName = resume.FileName;
-
-                string ext = resumeName.Substring(resumeName.LastIndexOf('.'));
-
-                string[] validExts = { ".pdf" };
-
-                if (validExts.Contains(ext.ToLower()) && (resume.ContentLength <= 4194304))//4mb
+                if (resume != null)
                 {
-                    //Manual Delete 
-                    if (userDetail.ResumeFileName != null)
+                    #region Resume
+
+                    string resumeName = resume.FileName;
+
+                    string ext = resumeName.Substring(resumeName.LastIndexOf('.'));
+
+                    string[] validResumeExts = { ".pdf" };
+
+                    if (validResumeExts.Contains(ext.ToLower()) && (resume.ContentLength <= 4194304))//4mb
                     {
-                        System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+                        //Manual Delete 
+                        if (userDetail.ResumeFileName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+                        }
+
+                        resumeName = Guid.NewGuid() + ext.ToLower();
+
+                        resume.SaveAs(Server.MapPath("~/Content/resumes/" + resumeName));
+
+                        userDetail.ResumeFileName = resumeName;
+
+                    }
+                    else
+                    {
+                        ViewBag.InvalidResumeFile = "Your resume was not uploaded correctely, please try a different file type (only .pdf files are accepted)";
+                        return View(userDetail);
                     }
 
-                    resumeName = Guid.NewGuid() + ext.ToLower();
-
-                    resume.SaveAs(Server.MapPath("~/Content/resumes/" + resumeName));
-
-                    userDetail.ResumeFileName = resumeName;
-
+                    #endregion
                 }
-                else
+
+                if (userImg != null)
                 {
-                    TempData["message"] = "Your resume was not uploaded correctely, please try a different file type (only .pdf files are accepted)";
-                    return RedirectToAction("Details", new { ID = id });
+                    #region Resume
+
+                    string userImgName = userImg.FileName;
+
+                    string ext = userImgName.Substring(userImgName.LastIndexOf('.'));
+
+                    string[] validImgExts = { ".jpeg", ".jpg", ".png" };
+
+                    if (validImgExts.Contains(ext.ToLower()) && (userImg.ContentLength <= 4194304))
+                    {
+                        //Manual Delete 
+                        if (userDetail.UserImage != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Content/employeeImages/" + userDetail.UserImage));
+                        }
+
+                        userImgName = Guid.NewGuid() + ext.ToLower();
+
+                        userImg.SaveAs(Server.MapPath("~/Content/employeeImages/" + userImgName));
+
+                        userDetail.UserImage = userImgName;
+
+                    }
+                    else
+                    {
+                        ViewBag.InvalidImageFile = "Your Image was not uploaded correctely, please try a different file type (only .jpg, .jpeg and .png files are accepted)";
+                        return View(userDetail);
+                    }
+
+                    #endregion
                 }
 
-                
                 db.Entry(userDetail).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = userViewId });
             }
 
-            TempData["message"] = "There was an error uploading your resume. Please try again later or contact IT User Support.";
-            return RedirectToAction("Details", new { ID = id });
+
+            ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating", userDetail.PerformanceReviewId);
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
+            return View(userDetail);
         }
-
-
 
 
         // GET: UserDetails/Delete/5
@@ -208,8 +280,15 @@ namespace JobBoard.UI.MVC.Controllers
         {
             UserDetail userDetail = db.UserDetails.Find(id);
             db.UserDetails.Remove(userDetail);
+
+            // Manual Delete
+            if (userDetail.ResumeFileName != null)
+            {
+                System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+            }
+
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { ID = id });
         }
 
         protected override void Dispose(bool disposing)

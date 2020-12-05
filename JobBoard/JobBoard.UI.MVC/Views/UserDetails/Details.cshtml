@@ -6,7 +6,8 @@
     ViewBag.Title = "Details";
 }
 
-<div class="card col-md-6 employeeDetails" style="width: 22rem;">
+<!--Employee Details-->
+<div class="card col-md-6 employeeDetails">
     @if (Model.UserImage != null)
     {
         <img class="card-img-top" src="~/Content/employeeImages/@Model.UserImage" alt="@Model.FullName">
@@ -14,6 +15,7 @@
     else
     {
         <img class="card-img-top" src="~/Content/employeeImages/no-user-img.png" alt="@Model.FullName">
+
     }
 
     <div class="card-body">
@@ -27,7 +29,7 @@
         <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber):</b><br /> @Html.DisplayFor(model => model.AspNetUser.PhoneNumber)</li>
     </ul>
 
-    @if ((bool)Model.IsOpenToNewOpps && Model.IsOpenToNewOpps != null)
+    @if (Model.IsOpenToNewOpps == true && Model.IsOpenToNewOpps != null)
     {
         <ul class="list-group list-group-flush">
             <li class="list-group-item openOpps">Open to new Opportunities</li>
@@ -68,11 +70,12 @@
     </div>
 </div>
 
+<!--Resume-->
 @if (Model.ResumeFileName == null)
 {
     if (Model.UserId == currentUser.UserId)
     {
-        using (Html.BeginForm("AddResume", "UserDetails", new { id = currentUser.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        using (Html.BeginForm("AddResume", "UserDetails", new { userViewId = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="col-md-9">
                 <div class="card resume-card">
@@ -80,7 +83,7 @@
                         <h2>You Currently do not have a Resume on File. Click Below to Upload your .pdf File.</h2>
                         <input type="file" name="resume" />
                         <input type="submit" value="Upload Resume" class="btn btn-primary" />
-                        <h5 style="color: red;">@ViewBag.Message</h5>
+                        <h5 style="color: red; padding-top: inherit;">@ViewBag.Message</h5>
                     </div>
                 </div>
             </div>
@@ -99,9 +102,16 @@
 }
 else
 {
-    <div class="col-md-6">
+    <div class="col-md-9 resume-iframe">
         <iframe src="~/Content/resumes/@Model.ResumeFileName" width="810" height="900" scrolling="no" frameborder="0"></iframe>
-    </div>
-}
 
+        @if (Model.UserId == currentUser.UserId || User.IsInRole("Admin"))
+        {
+
+            <a href="@Url.Action("DeleteResume", "UserDetails", new { userViewId = Model.UserId })" class="btn btn-danger" >Delete</a>
+        }
+    </div>
+
+
+}
 

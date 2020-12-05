@@ -7,6 +7,16 @@
     ViewBag.Title = $"{Model.Position.Title}";
 }
 
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>@Html.ActionLink("Back to Job Board", "Index")</h4>
+            </div>
+        </div>
+    </section>
+}
+
 <div class="portfolio-description">
     <h2>@ViewBag.Title</h2>
 </div>
@@ -41,10 +51,6 @@
                 <h5 class="card-title">@Html.DisplayNameFor(model => model.Duration)</h5>
                 <p class="card-text">@Html.DisplayFor(model => model.Duration)</p>
 
-
-                <a href="@Url.Action("CreateApp", new { id = Model.OpenPositionId })" class="btn btn-primary">Apply</a>
-                @*<a href="@Url.Action("Create", "Applications")" class="btn btn-primary">Save</a>*@
-
                 <!-- #region Get current user -->
                 @{
                     JobBoardEntities db = new JobBoardEntities();
@@ -54,6 +60,28 @@
                     UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
                 }
                 <!-- #endregion -->
+
+                <div style="padding-top: inherit;">
+                    @if (currentUser.ResumeFileName != null)
+                    {
+                        if (ViewBag.HasApplied == false)
+                        {
+                            <a href="@Url.Action("CreateApp", new { opId = Model.OpenPositionId })" class="btn btn-primary">Apply</a>
+                        }
+                        else
+                        {
+                            <a href="" class="btn btn-success applied-btn">Applied &check;</a>
+                        }
+                    }
+                    else
+                    {
+                        <h5>No Resume was found for your account, click <a href="@Url.Action("Details","UserDetails", new { id = currentUser.UserId })">here </a>to add a Resume.</h5>
+                    }
+                </div>
+
+                @*<a href="@Url.Action("Create", "Applications")" class="btn btn-primary">Save</a>*@
+
+
 
                 @if ((Request.IsAuthenticated && Model.Location.ManagerId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
                 {
@@ -76,4 +104,3 @@
 </div>
 
 
-@Html.ActionLink("Back to Job Board", "Index")

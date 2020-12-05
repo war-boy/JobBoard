@@ -67,28 +67,42 @@ namespace JobBoard.UI.MVC.Controllers
 
         // GET: OpenPositions/Details/5
         [Authorize]
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string userId)
         {
-            if (id == null)
+            if (id == null || userId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             OpenPosition openPosition = db.OpenPositions.Find(id);
-            if (openPosition == null)
+            UserDetail userDetail = db.UserDetails.Find(userId);
+            if (openPosition == null || userDetail == null)
             {
                 return HttpNotFound();
             }
+
+            //Search database for applications with matching OpenPositionId and UserId. Return True if any records are found, False is not
+            var userApplied = db.Applications.Where(a => a.UserId == userId && a.OpenPositionId == id).Any();
+         
+            if (userApplied)
+            {
+                ViewBag.HasApplied = true;
+            }
+            else
+            {
+                ViewBag.HasApplied = false;
+            }
+
             return View(openPosition);
         }
 
-        public ActionResult CreateApp(int? id)
+        public ActionResult CreateApp(int? opId)
         {
-            if (id == null)
+            if (opId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            OpenPosition openPosition = db.OpenPositions.Find(id);
+            OpenPosition openPosition = db.OpenPositions.Find(opId);
 
             if (openPosition == null)
             {
@@ -100,6 +114,7 @@ namespace JobBoard.UI.MVC.Controllers
 
             UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
             #endregion
+
             Application application = new Application();
 
             application.OpenPositionId = openPosition.OpenPositionId;
@@ -124,8 +139,7 @@ namespace JobBoard.UI.MVC.Controllers
                 throw;
             }
 
-            return View("ApplicationConfirm", openPosition);
-            //return View("Details", new { ID = id });
+            return RedirectToAction("Details", new { id = opId, userId = currentUser.UserId });
         }
 
 

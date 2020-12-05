@@ -16,9 +16,10 @@
     </section>
 }
 
-@using (Html.BeginForm("Edit", "UserDetails", new { id = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "UserDetails", new { userViewId = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+
     <!-- #region Get current user -->
 
     JobBoardEntities db = new JobBoardEntities();
@@ -30,14 +31,33 @@
     <!-- #endregion -->
 
 
-    <div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UserId)
+    @*@Html.HiddenFor(model => model.IsOpenToNewOpps)
+        @Html.HiddenFor(model => model.IsOpenToRelocation)*@
 
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserId)
+    <!--Only Admins, Employees (who were able to access this action), and managers IF this is their information-->
+    if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Employee") || Request.IsAuthenticated && User.IsInRole("Manager") && currentUser.UserId == Model.UserId)
+    {
 
-        <!--Only Admins, Employees (who were able to access this action), and managers IF this is their information-->
-        @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Employee") || Request.IsAuthenticated && User.IsInRole("Manager") && currentUser.UserId == Model.UserId)
-        {
+        @Html.HiddenFor(model => model.UserImage)
+        <div class="form-group">
+            <div class="col-md-3 employeeDetails">
+                <div>
+                    @if (Model.UserImage != null)
+                    {
+                        <img src="~/Content/employeeImages/@Model.UserImage" alt="@Model.UserImage" class="card-img-top" />
+                    }
+                </div>
+                <br />
+                <p>
+                    <label>Change Image: </label><input type="file" name="userImg" />
+                </p>
+                <span class="text-danger">@ViewBag.InvalidImageFile</span>
+            </div>
+        </div>
+
+        <div class="col-md-9 form-horizontal">
             <div class="form-group">
                 @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -71,6 +91,7 @@
                 <div class="col-md-10">
                     <label>Upload new resume: </label><input type="file" name="resume" />
                 </div>
+                <h5 style="color: red; padding-top: inherit;">@ViewBag.InvalidResumeFile</h5>
             </div>
 
             <div class="form-group">
@@ -112,7 +133,6 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -129,37 +149,35 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.UserImage, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserImage, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.UserImage, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        }
 
-        @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
-        {
-            <div class="form-group">
-                @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        }
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            @if (Request.IsAuthenticated && User.IsInRole("Admin") || currentUser.UserId != Model.UserId && User.IsInRole("Manager"))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-    </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+    }
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

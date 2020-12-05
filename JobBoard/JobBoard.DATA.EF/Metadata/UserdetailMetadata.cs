@@ -19,14 +19,14 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Resume")]
         public string ResumeFileName { get; set; }
 
-        [Display(Name = "Open to relocation?")]
-        [DisplayFormat(NullDisplayText = "False")]
+        [Display(Name = "Open to relocation")]
+        //[DisplayFormat(NullDisplayText = "False")]
         public bool IsOpenToRelocation { get; set; }
 
         [DisplayFormat(NullDisplayText = "* Title not Provided")]
         public string Title { get; set; }
 
-        [Display(Name = "Open to what employment types?")]
+        [Display(Name = "Employment Types")]
         public string EmploymentType { get; set; }
 
         [Display(Name = "Visa Status")]
@@ -43,6 +43,7 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Employee Image")]
         public string UserImage { get; set; }
 
+        [Display(Name = "Open to new Opportunities")]
         [DisplayFormat(NullDisplayText = "False")]
         public bool IsOpenToNewOpps { get; set; }
 
