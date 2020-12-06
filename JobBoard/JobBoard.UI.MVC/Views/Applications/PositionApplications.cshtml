@@ -1,63 +1,71 @@
-﻿@model IEnumerable<JobBoard.DATA.EF.Application>
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model IEnumerable<JobBoard.DATA.EF.Application>
 
 @{
-    ViewBag.Title = "PositionApplications";
+    OpenPosition openPosition = ViewBag.OpenPosition;
+    ViewBag.Title = $"Applications Submitted for: {openPosition.PositionName}";
 }
 
-<h2>PositionApplications</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ApplicationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ManagerNotes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ResumeFilename)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApplicationStatu.StatusName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OpenPosition.EmploymentType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserDetail.FirstName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApplicationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ManagerNotes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ResumeFilename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OpenPosition.EmploymentType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserDetail.FirstName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ApplicationId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ApplicationId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ApplicationId })
-        </td>
-    </tr>
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </section>
 }
 
-</table>
+
+    <table class="table display" id="table_id">
+        <thead>
+            <tr>
+
+                <th>
+                    Applicant's Name
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationDate)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.OpenPosition.Position.Title)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationStatu.StatusName)
+                </th>
+
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr>
+
+                    <td>
+                        @Html.DisplayNameFor(model => model.UserDetail.FullName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationDate)
+                    </td>
+
+                    <td>
+                        <a href="@Url.Action("Details", "OpenPositions", new { id = item.OpenPositionId})">
+                            @Html.DisplayFor(modelItem => item.OpenPosition.Position.Title) - #@Html.DisplayFor(modelItem => item.OpenPositionId)
+                        </a>
+
+                    </td>
+
+                    <td title="@item.ApplicationStatu.StatusDescription">
+                        @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+    </table>

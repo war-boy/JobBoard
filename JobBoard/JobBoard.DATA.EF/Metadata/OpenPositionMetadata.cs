@@ -27,8 +27,12 @@ namespace JobBoard.DATA.EF
     }
 
     [MetadataType(typeof(OpenPositionMetadata))]
-    public partial class OpenPosition
+    public partial class OpenPosition : PositionMetadata
     {
-        
+        [Display(Name = "Position")]
+        public string PositionName
+        {
+            get { return $"{Title}- #{OpenPositionId}"; }
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         //Get list of all applications sent for the given OpenPosition
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult PositionApplications(int? id)
         {
             if (id == null)
@@ -51,6 +52,13 @@ namespace JobBoard.UI.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            OpenPosition openPosition = db.OpenPositions.Find(id);
+            if (openPosition == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.OpenPosition = openPosition;
             var positionApplications = db.Applications.Where(a => a.OpenPositionId == id);
             return View(positionApplications.ToList());
         }

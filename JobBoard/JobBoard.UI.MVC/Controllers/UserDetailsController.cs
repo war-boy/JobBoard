@@ -122,6 +122,8 @@ namespace JobBoard.UI.MVC.Controllers
         }
 
         
+
+
         // GET: UserDetails/Create
         public ActionResult Create()
         {
@@ -281,14 +283,20 @@ namespace JobBoard.UI.MVC.Controllers
             UserDetail userDetail = db.UserDetails.Find(id);
             db.UserDetails.Remove(userDetail);
 
-            // Manual Delete
+            // Manual Delete Resume
+            if (userDetail.ResumeFileName != null)
+            {
+                System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
+            }
+
+            // Manual Delete User Image
             if (userDetail.ResumeFileName != null)
             {
                 System.IO.File.Delete(Server.MapPath("~/Content/resumes/" + userDetail.ResumeFileName));
             }
 
             db.SaveChanges();
-            return RedirectToAction("Details", new { ID = id });
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

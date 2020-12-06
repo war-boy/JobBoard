@@ -9,8 +9,7 @@ namespace JobBoard.DATA.EF
         public int ApplicationStatusId { get; set; }
 
         [Required]
-        [Display(Name = "Application Status Name")]
-        [DisplayFormat(NullDisplayText = "*Application Status Name is required")]
+        [Display(Name = "Status")]
         public string StatusName { get; set; }
 
         

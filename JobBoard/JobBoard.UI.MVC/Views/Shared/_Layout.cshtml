@@ -19,8 +19,9 @@
     <link href="~/Content/PagedList.css" rel="stylesheet" />
 
     <!--Data Tables-->
-    <link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
-    <link href="~/Content/datatables/datatables.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
+        <link href="~/Content/datatables/datatables.css" rel="stylesheet" />*@
 
     <!-- Favicons -->
     <link href="~/Content/assets/img/favicon.PNG" rel="icon">
@@ -41,14 +42,14 @@
     <link href="~/Content/assets/css/style.css" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <!--Date Picker-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    
+
 
     <!--Custom CSS-->
     <link href="~/Content/custom.css" rel="stylesheet" />
@@ -215,15 +216,6 @@
             if ($(this).attr('href') == window.location.pathname) {
                 $(this).addClass('active');
             }
-        });
-
-
-        $(".check").click(function () {
-            $("#IsRemoteBox").prop("checked", true);
-        });
-
-        $(".uncheck").click(function () {
-            $("#IsRemoteBox").prop("checked", false);
         });
 
     </script>

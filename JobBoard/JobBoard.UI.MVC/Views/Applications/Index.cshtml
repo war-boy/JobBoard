@@ -1,4 +1,6 @@
-﻿@model IEnumerable<JobBoard.DATA.EF.Application>
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model IEnumerable<JobBoard.DATA.EF.Application>
 
 @{
     ViewBag.Title = "Applications";
@@ -14,9 +16,6 @@
     </section>
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table display" id="table_id">
     <thead>
         <tr>
@@ -24,23 +23,27 @@
                 @Html.DisplayNameFor(model => model.ApplicationDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ManagerNotes)
+                @Html.DisplayNameFor(model => model.UserDetail.FullName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ResumeFilename)
+                @Html.DisplayNameFor(model => model.OpenPosition.Position.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationStatu.StatusName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpenPosition.OpenPositionId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserDetail.FirstName)
-            </th>
             <th></th>
         </tr>
     </thead>
+
+    <!-- #region Get current user -->
+    @{
+        JobBoardEntities db = new JobBoardEntities();
+
+        string userID = User.Identity.GetUserId();
+
+        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+    }
+    <!-- #endregion -->
 
     @foreach (var item in Model)
     {
@@ -50,36 +53,34 @@
                     @Html.DisplayFor(modelItem => item.ApplicationDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ManagerNotes)
+                    <a href="@Url.Action("Details", "UserDetails", new { id = item.UserId })">
+                        @Html.DisplayFor(modelItem => item.UserDetail.FullName)
+                    </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ResumeFilename)
+                    <a href="@Url.Action("Details", "OpenPositions", new { id = item.OpenPositionId, userId = currentUser.UserId })">
+                        @Html.DisplayNameFor(model => model.OpenPosition.Position.Title)- #@Html.DisplayFor(modelItem => item.OpenPosition.OpenPositionId)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OpenPosition.OpenPositionId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserDetail.FirstName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ApplicationId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.ApplicationId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ApplicationId })
                 </td>
             </tr>
         </tbody>
-            }
+    }
 
-    </table>
+</table>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function () {
-        $('#table_id').DataTable();
-    });
-</script>
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>
+}

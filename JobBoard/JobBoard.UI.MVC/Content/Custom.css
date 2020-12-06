@@ -10,7 +10,7 @@ h2 {
 }
 
 .breadcrumbs {
-    margin-top: 40px !important;
+    margin-top: 0 !important;
 }
 
     .breadcrumbs h2 {
@@ -21,6 +21,15 @@ h2 {
 
 a.active {
     color: #106eea !important;
+}
+
+td a:hover{
+    text-decoration: underline;
+}
+
+.form-btns a.btn, .form-btns input.btn {
+    float: right;
+    margin: 0.5em;
 }
 
 
@@ -157,11 +166,7 @@ li.list-group-item {
     padding-left: 35px;
 }
 
-    .resume-iframe a.btn {
-        float: right;
-        margin-top: 1em;
-    }
-
+  
 .resume-card {
     text-align: center;
     width: max-content;
@@ -172,7 +177,7 @@ li.list-group-item {
         padding: 10px;
     }
 
-    .resume-card input[type="file"] {
+    .resume-card input[type="file"], .employeeDetails input[type="file"]{
         display: -webkit-inline-box;
         padding-right: inherit;
     }
@@ -191,12 +196,8 @@ li.list-group-item {
 
 /*Contact Form*/
 
-.contact-form input.form-control {
-    max-width: none;
-    font-size: 18px;
-}
-
-.contact-form textarea {
+.contact-form input, .contact-form textarea {
     max-width: none;
     font-size: 15px;
 }
+

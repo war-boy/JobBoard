@@ -466,7 +466,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_ogLayout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -556,10 +555,10 @@
     <Content Include="Views\PerformanceReviews\Edit.cshtml" />
     <Content Include="Views\PerformanceReviews\Index.cshtml" />
     <Content Include="Views\OpenPositions\Delete.cshtml" />
-    <Content Include="Views\OpenPositions\ApplicationConfirm.cshtml" />
     <Content Include="Views\OpenPositions\YourPositions.cshtml" />
     <Content Include="Views\Applications\PositionApplications.cshtml" />
     <Content Include="Views\Home\MessageConfirmation.cshtml" />
+    <Content Include="Views\Applications\YourApplications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
