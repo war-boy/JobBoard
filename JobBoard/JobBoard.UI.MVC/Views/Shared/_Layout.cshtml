@@ -18,11 +18,6 @@
     <!--Pagination-->
     <link href="~/Content/PagedList.css" rel="stylesheet" />
 
-    <!--Data Tables-->
-    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
-    @*<link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
-        <link href="~/Content/datatables/datatables.css" rel="stylesheet" />*@
-
     <!-- Favicons -->
     <link href="~/Content/assets/img/favicon.PNG" rel="icon">
     <link href="~/Content/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -50,11 +45,14 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
 
+    <!--Data Tables-->
+    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
+        <link href="~/Content/datatables/datatables.css" rel="stylesheet" />*@
+
 
     <!--Custom CSS-->
     <link href="~/Content/custom.css" rel="stylesheet" />
-
-
 
     <!-- =======================================================
     * Template Name: BizLand - v1.1.1
@@ -74,6 +72,7 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul id="responsive-nav">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "Locations")">Locations</a></li>
                     <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
                     <li><a href="@Url.Action("Index", "UserDetails")">Employee Directory</a></li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
@@ -142,19 +141,6 @@
                                 <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
                             </ul>
                         </div>
-
-                        <div class="col-lg-3 col-md-6 footer-links">
-                            <h4>Our Social Networks</h4>
-                            <p>Follow us on social media.</p>
-                            <div class="social-links mt-3">
-                                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-                                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -177,6 +163,8 @@
     <div id="preloader"></div>
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
     <!-- Vendor JS Files -->
     <script src="~/Content/assets/vendor/jquery/jquery.min.js"></script>
@@ -196,16 +184,18 @@
     <!--Custom JS-->
     <script src="~/Content/custom.js"></script>
 
-    <!--Datatables-->
-    <script src="~/Content/datatables/datatables.min.js"></script>
-    <script src="~/Content/datatables/datatables.js"></script>
 
     <!--jQuery UI (Date Picker)-->
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/cssjqryUi")
 
-    @*@Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")*@
+
+    <!--jQuery UI Script Reference-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--Datatables.net JS reference-->
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 
     @RenderSection("scripts", required: false)
 
@@ -218,6 +208,27 @@
             }
         });
 
+    </script>
+
+    <script>
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    effect: "fade",
+                    duration: 900
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 900
+                }
+
+            });
+
+            $("#delete-btn").on("click", function () {
+                $("#dialog").dialog("open");
+            });
+        });
     </script>
 
 </body>

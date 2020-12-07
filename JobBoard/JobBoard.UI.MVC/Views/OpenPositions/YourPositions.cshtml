@@ -17,9 +17,6 @@
     </section>
 }
 
-@*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
 
 @foreach (var item in Model)
 {
@@ -31,24 +28,25 @@
     UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
     #endregion
 
-    
+
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <a href="@Url.Action("Details", new { id = item.OpenPositionId })">
+            <a href="@Url.Action("Details", new { id = item.OpenPositionId, userId = currentUser.UserId })">
                 @Html.DisplayFor(modelItem => item.Position.Title) - @Html.DisplayFor(modelItem => item.OpenPositionId)
             </a>
 
             @if ((Request.IsAuthenticated && item.Location.ManagerId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
             {
-            <div class="boardCrud">
-                <a href="@Url.Action("PositionApplications", "Applications", new { id = item.OpenPositionId })">View Applicants</a> <i class="fa fa-user-circle-o" aria-hidden="true"></i> |
-                @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) <i class="fa fa-pencil-square-o" aria-hidden="true"></i> |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId }) <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </div>
+                <div class="boardCrud">
+                    <a href="@Url.Action("PositionApplications", "Applications", new { id = item.OpenPositionId })">View Applicants </a><i class="fa fa-user-circle-o" aria-hidden="true"></i> |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) <i class="fa fa-pencil-square-o" aria-hidden="true"></i> |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId }) <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </div>
             }
 
         </div>
         <div class="panel-body">
+            <div class="panel-location">@item.Location.FullLocation</div>
             @Html.DisplayFor(modelItem => item.Position.JobDescription)
         </div>
     </div>

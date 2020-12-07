@@ -19,8 +19,17 @@ h2 {
         margin: 0;
     }
 
+.breadcrumb-link{
+    background-color: white;
+    padding-bottom: 0;
+}
+
 a.active {
     color: #106eea !important;
+}
+
+a.btn-danger {
+    color: #fff !important;
 }
 
 td a:hover{
@@ -162,11 +171,11 @@ li.list-group-item {
     width: 22rem;
 }
 
-.resume-iframe {
+.right-card {
     padding-left: 35px;
 }
 
-  
+
 .resume-card {
     text-align: center;
     width: max-content;

@@ -23,9 +23,10 @@ namespace JobBoard.DATA.EF
         public int OpenPositionId { get; set; }
         public int LocationId { get; set; }
         public int PositionId { get; set; }
-        public bool? IsRemote { get; set; }
+        public Nullable<bool> IsRemote { get; set; }
         public string EmploymentType { get; set; }
         public string Duration { get; set; }
+        public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Application> Applications { get; set; }

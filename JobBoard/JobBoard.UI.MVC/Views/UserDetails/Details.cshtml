@@ -29,12 +29,12 @@
         <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.AspNetUser.PhoneNumber):</b><br /> @Html.DisplayFor(model => model.AspNetUser.PhoneNumber)</li>
     </ul>
 
-    @if (Model.IsOpenToNewOpps == true && Model.IsOpenToNewOpps != null)
+    @if (Model.IsOpenToNewOpps == true)
     {
         <ul class="list-group list-group-flush">
             <li class="list-group-item openOpps">Open to new Opportunities</li>
             <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.EmploymentType):</b><br /> @Html.DisplayFor(model => model.EmploymentType)</li>
-            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.IsOpenToRelocation):</b><br /> @((bool)Model.IsOpenToRelocation ? "Yes" : "No")</li>
+            <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.IsOpenToRelocation):</b><br /> @(Model.IsOpenToRelocation ? "Yes" : "No")</li>
             <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.VisaStatus):</b><br /> @Html.DisplayFor(model => model.VisaStatus)</li>
         </ul>
     }
@@ -53,12 +53,6 @@
         @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin")))
         {
             @Html.ActionLink("Edit Information", "Edit", new { id = Model.UserId });
-        }
-
-        <!--Only managers, admins and the respective employee should be able to view the employee's Performance Reviews-->
-        @if ((Request.IsAuthenticated && Model.UserId == currentUser.UserId) || (Request.IsAuthenticated && User.IsInRole("Admin") || (Request.IsAuthenticated && User.IsInRole("Manager"))))
-        {
-            <a href="@Url.Action("Index", "PerforanceReviews")" class="card-link"> | Performance Reviews </a>
         }
 
         <!--If this ISN'T the Details View for the current user's details AND the user you are attempting to has a valid email, give them the option to contact-->
@@ -102,13 +96,16 @@
 }
 else
 {
-    <div class="col-md-9 resume-iframe">
+    <div class="col-md-9 right-card">
         <iframe src="~/Content/resumes/@Model.ResumeFileName" width="810" height="900" scrolling="no" frameborder="0"></iframe>
 
         @if (Model.UserId == currentUser.UserId || User.IsInRole("Admin"))
         {
-
-            <a href="@Url.Action("DeleteResume", "UserDetails", new { userViewId = Model.UserId })" class="btn btn-danger" >Delete</a>
+            <div class="form-group row">
+                <div class="col-md-12 form-btns">
+                    <a href="@Url.Action("DeleteResume", "UserDetails", new { userViewId = Model.UserId })" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
         }
     </div>
 

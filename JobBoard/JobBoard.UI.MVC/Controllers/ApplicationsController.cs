@@ -16,7 +16,7 @@ namespace JobBoard.UI.MVC.Controllers
         private JobBoardEntities db = new JobBoardEntities();
 
         // GET: Applications
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var applications = db.Applications.Include(a => a.ApplicationStatu).Include(a => a.OpenPosition).Include(a => a.UserDetail);
@@ -59,7 +59,8 @@ namespace JobBoard.UI.MVC.Controllers
             }
 
             ViewBag.OpenPosition = openPosition;
-            var positionApplications = db.Applications.Where(a => a.OpenPositionId == id);
+
+            var positionApplications = db.Applications.Where(a => a.OpenPositionId == id && a.ApplicationStatusId != 2);
             return View(positionApplications.ToList());
         }
 

@@ -1,51 +1,97 @@
-﻿@model IEnumerable<JobBoard.DATA.EF.UserDetail>
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model IEnumerable<JobBoard.DATA.EF.UserDetail>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Employee Directory";
 }
 
-<h2>Index</h2>
+@section head{
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </section>
+}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            <label>Office</label>
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </th>
-        <th></th>
-    </tr>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Office
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AspNetUser.Email)
+            </th>
+            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.FullLocation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
-        </td>
-    </tr>
-}
+    <!-- #region Get current user -->
+    @{
+        JobBoardEntities db = new JobBoardEntities();
+
+        string userID = User.Identity.GetUserId();
+
+        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+    }
+    <!-- #endregion -->
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "UserDetails", new { id = item.UserId })" title="View Profile">
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.FullLocation)
+                </td>
+                <td>
+                    <a href="@Url.Action("Contact", "Home", new { senderId = currentUser.UserId, receiverId = item.UserId})" title="Contact">
+                        @Html.DisplayFor(modelItem => item.AspNetUser.Email)
+                    </a>
+                </td>
+
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
+                    </td>
+                }
+            </tr>
+
+        }
+    </tbody>
 
 </table>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+

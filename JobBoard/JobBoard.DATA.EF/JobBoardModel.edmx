@@ -107,16 +107,7 @@
           <Property Name="IsRemote" Type="bit" />
           <Property Name="EmploymentType" Type="varchar" MaxLength="50" />
           <Property Name="Duration" Type="varchar" MaxLength="15" />
-        </EntityType>
-        <EntityType Name="PerformanceReviews">
-          <Key>
-            <PropertyRef Name="PerformanceReviewId" />
-          </Key>
-          <Property Name="PerformanceReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LocationId" Type="int" />
-          <Property Name="ReviewDate" Type="date" />
-          <Property Name="PerformanceRating" Type="varchar" MaxLength="25" />
-          <Property Name="ReviewDetails" Type="varchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Positions">
           <Key>
@@ -144,16 +135,14 @@
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ResumeFileName" Type="varchar" MaxLength="75" />
-          <Property Name="IsOpenToRelocation" Type="bit" />
+          <Property Name="IsOpenToRelocation" Type="bit" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="50" />
           <Property Name="EmploymentType" Type="varchar" MaxLength="20" />
           <Property Name="VisaStatus" Type="varchar" MaxLength="20" />
           <Property Name="DateOfHire" Type="date" />
-          <Property Name="Notes" Type="ntext" />
           <Property Name="UserImage" Type="varchar" MaxLength="100" />
-          <Property Name="PerformanceReviewId" Type="int" />
           <Property Name="LocationId" Type="int" />
-          <Property Name="IsOpenToNewOpps" Type="bit" />
+          <Property Name="IsOpenToNewOpps" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Applications_ApplicationStatus">
           <End Role="ApplicationStatus" Type="Self.ApplicationStatus" Multiplicity="1" />
@@ -271,18 +260,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PerformanceViews_Locations">
-          <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
-          <End Role="PerformanceReviews" Type="Self.PerformanceReviews" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Locations">
-              <PropertyRef Name="LocationId" />
-            </Principal>
-            <Dependent Role="PerformanceReviews">
-              <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserDetails_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
@@ -307,18 +284,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserDetails_PerformanceViews">
-          <End Role="PerformanceReviews" Type="Self.PerformanceReviews" Multiplicity="0..1" />
-          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PerformanceReviews">
-              <PropertyRef Name="PerformanceReviewId" />
-            </Principal>
-            <Dependent Role="UserDetails">
-              <PropertyRef Name="PerformanceReviewId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="JobBoardModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
@@ -330,7 +295,6 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OpenPositions" EntityType="Self.OpenPositions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PerformanceReviews" EntityType="Self.PerformanceReviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
@@ -370,20 +334,12 @@
             <End Role="Positions" EntitySet="Positions" />
             <End Role="OpenPositions" EntitySet="OpenPositions" />
           </AssociationSet>
-          <AssociationSet Name="FK_PerformanceViews_Locations" Association="Self.FK_PerformanceViews_Locations">
-            <End Role="Locations" EntitySet="Locations" />
-            <End Role="PerformanceReviews" EntitySet="PerformanceReviews" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserDetails_AspNetUsers" Association="Self.FK_UserDetails_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="UserDetails" EntitySet="UserDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_UserDetails_Locations" Association="Self.FK_UserDetails_Locations">
             <End Role="Locations" EntitySet="Locations" />
-            <End Role="UserDetails" EntitySet="UserDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserDetails_PerformanceViews" Association="Self.FK_UserDetails_PerformanceViews">
-            <End Role="PerformanceReviews" EntitySet="PerformanceReviews" />
             <End Role="UserDetails" EntitySet="UserDetails" />
           </AssociationSet>
         </EntityContainer>
@@ -486,7 +442,6 @@
           <Property Name="ManagerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="UserDetail" Relationship="Self.FK_Locations_UserDetails" FromRole="Locations" ToRole="UserDetails" />
           <NavigationProperty Name="OpenPositions" Relationship="Self.FK_OpenPositions_Locations" FromRole="Locations" ToRole="OpenPositions" />
-          <NavigationProperty Name="PerformanceViews" Relationship="Self.FK_PerformanceViews_Locations" FromRole="Locations" ToRole="PerformanceViews" />
           <NavigationProperty Name="UserDetails" Relationship="JobBoardModel.FK_UserDetails_Locations" FromRole="Location" ToRole="UserDetail" />
           <Property Name="LocationImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -503,18 +458,7 @@
           <Property Name="IsRemote" Type="Boolean" />
           <Property Name="EmploymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Duration" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="PerformanceReview">
-          <Key>
-            <PropertyRef Name="PerformanceReviewId" />
-          </Key>
-          <Property Name="PerformanceReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LocationId" Type="Int32" />
-          <Property Name="ReviewDate" Type="DateTime" Precision="0" />
-          <Property Name="PerformanceRating" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="ReviewDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_PerformanceViews_Locations" FromRole="PerformanceViews" ToRole="Locations" />
-          <NavigationProperty Name="UserDetails" Relationship="Self.FK_UserDetails_PerformanceViews" FromRole="PerformanceViews" ToRole="UserDetails" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -543,21 +487,18 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ResumeFileName" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
-          <Property Name="IsOpenToRelocation" Type="Boolean" />
+          <Property Name="IsOpenToRelocation" Type="Boolean" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="EmploymentType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="VisaStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DateOfHire" Type="DateTime" Precision="0" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserImage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PerformanceReviewId" Type="Int32" />
           <NavigationProperty Name="Applications" Relationship="Self.FK_Applications_UserDetails" FromRole="UserDetails" ToRole="Applications" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Locations_UserDetails" FromRole="UserDetails" ToRole="Locations" />
-          <NavigationProperty Name="PerformanceView" Relationship="Self.FK_UserDetails_PerformanceViews" FromRole="UserDetails" ToRole="PerformanceViews" />
           <NavigationProperty Name="AspNetUser" Relationship="JobBoardModel.FK_UserDetails_AspNetUsers" FromRole="UserDetail" ToRole="AspNetUser" />
           <Property Name="LocationId" Type="Int32" />
           <NavigationProperty Name="Location" Relationship="JobBoardModel.FK_UserDetails_Locations" FromRole="UserDetail" ToRole="Location" />
-          <Property Name="IsOpenToNewOpps" Type="Boolean" />
+          <Property Name="IsOpenToNewOpps" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Applications_ApplicationStatus">
           <End Role="ApplicationStatus" Type="Self.ApplicationStatu" Multiplicity="1" />
@@ -647,18 +588,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PerformanceViews_Locations">
-          <End Role="Locations" Type="Self.Location" Multiplicity="0..1" />
-          <End Role="PerformanceViews" Type="JobBoardModel.PerformanceReview" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Locations">
-              <PropertyRef Name="LocationId" />
-            </Principal>
-            <Dependent Role="PerformanceViews">
-              <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OpenPositions_Positions">
           <End Role="Positions" Type="Self.Position" Multiplicity="1" />
           <End Role="OpenPositions" Type="Self.OpenPosition" Multiplicity="*" />
@@ -668,18 +597,6 @@
             </Principal>
             <Dependent Role="OpenPositions">
               <PropertyRef Name="PositionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserDetails_PerformanceViews">
-          <End Role="PerformanceViews" Type="JobBoardModel.PerformanceReview" Multiplicity="0..1" />
-          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PerformanceViews">
-              <PropertyRef Name="PerformanceReviewId" />
-            </Principal>
-            <Dependent Role="UserDetails">
-              <PropertyRef Name="PerformanceReviewId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -697,7 +614,6 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="OpenPositions" EntityType="Self.OpenPosition" />
-          <EntitySet Name="PerformanceReviews" EntityType="JobBoardModel.PerformanceReview" />
           <EntitySet Name="Positions" EntityType="Self.Position" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
@@ -729,17 +645,9 @@
             <End Role="Locations" EntitySet="Locations" />
             <End Role="OpenPositions" EntitySet="OpenPositions" />
           </AssociationSet>
-          <AssociationSet Name="FK_PerformanceViews_Locations" Association="Self.FK_PerformanceViews_Locations">
-            <End Role="Locations" EntitySet="Locations" />
-            <End Role="PerformanceViews" EntitySet="PerformanceReviews" />
-          </AssociationSet>
           <AssociationSet Name="FK_OpenPositions_Positions" Association="Self.FK_OpenPositions_Positions">
             <End Role="Positions" EntitySet="Positions" />
             <End Role="OpenPositions" EntitySet="OpenPositions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserDetails_PerformanceViews" Association="Self.FK_UserDetails_PerformanceViews">
-            <End Role="PerformanceViews" EntitySet="PerformanceReviews" />
-            <End Role="UserDetails" EntitySet="UserDetails" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -876,6 +784,7 @@
           <EntitySetMapping Name="OpenPositions">
             <EntityTypeMapping TypeName="JobBoardModel.OpenPosition">
               <MappingFragment StoreEntitySet="OpenPositions">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="EmploymentType" ColumnName="EmploymentType" />
                 <ScalarProperty Name="IsRemote" ColumnName="IsRemote" />
@@ -919,9 +828,7 @@
                 <ScalarProperty Name="EmploymentType" ColumnName="EmploymentType" />
                 <ScalarProperty Name="VisaStatus" ColumnName="VisaStatus" />
                 <ScalarProperty Name="DateOfHire" ColumnName="DateOfHire" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="UserImage" ColumnName="UserImage" />
-                <ScalarProperty Name="PerformanceReviewId" ColumnName="PerformanceReviewId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -933,17 +840,6 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="PerformanceReviews">
-            <EntityTypeMapping TypeName="IsTypeOf(JobBoardModel.PerformanceReview)">
-              <MappingFragment StoreEntitySet="PerformanceReviews">
-                <ScalarProperty Name="ReviewDetails" ColumnName="ReviewDetails" />
-                <ScalarProperty Name="PerformanceRating" ColumnName="PerformanceRating" />
-                <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="PerformanceReviewId" ColumnName="PerformanceReviewId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

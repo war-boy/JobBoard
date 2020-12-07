@@ -13,7 +13,7 @@ using PagedList.Mvc;
 
 namespace JobBoard.UI.MVC.Controllers
 {
-    
+
     public class OpenPositionsController : Controller
     {
         private JobBoardEntities db = new JobBoardEntities();
@@ -24,8 +24,7 @@ namespace JobBoard.UI.MVC.Controllers
         {
             int pageSize = 10;
 
-
-            var openPositions = db.OpenPositions.Include(o => o.Location).Include(o => o.Position).ToList();
+            var openPositions = db.OpenPositions.Where(op => op.IsActive != false).Include(op => op.Location).Include(op => op.Position).ToList();
 
             if (searchString != null)
             {
@@ -38,21 +37,40 @@ namespace JobBoard.UI.MVC.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            if(!String.IsNullOrEmpty(searchString))
+
+
+
+            if (!String.IsNullOrEmpty(searchString))
             {
-                openPositions = db.OpenPositions.Where(o => o.Position.Title.ToLower().Contains(searchString.ToLower())).ToList();
+                //Search by Keyword and Location
+                if (locationId != null)
+                {
+                    var openPositionsByBoth = db.OpenPositions.Where(op => op.LocationId == locationId && op.IsActive != false && op.Position.Title.ToLower().Contains(searchString.ToLower())).ToList();
+
+                    ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
+                    ViewBag.CurrentFilter = searchString;
+
+                    return View(openPositionsByBoth.ToPagedList(page, pageSize));
+                }
+
+                //Search by just title
+                openPositions = db.OpenPositions.Where(op => op.IsActive != false && op.Position.Title.ToLower().Contains(searchString.ToLower())).ToList();
             }
-
-            ViewBag.CurrentFilter = searchString;
-
-            if (locationId != null)
+            else if (locationId != null)
             {
-                var openPositionsByLocation = db.OpenPositions.Where(op => op.LocationId == locationId).ToList();
+                //Search by just Location
+                var openPositionsByLocation = db.OpenPositions.Where(op => op.LocationId == locationId && op.IsActive != false).ToList();
+
+                ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
+                ViewBag.CurrentFilter = searchString;
+
                 return View(openPositionsByLocation.ToPagedList(page, pageSize));
             }
 
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City");
             return View(openPositions.ToPagedList(page, pageSize));
         }
+
 
         public ActionResult YourPositions(string id)
         {
@@ -80,9 +98,9 @@ namespace JobBoard.UI.MVC.Controllers
                 return HttpNotFound();
             }
 
+            //Determine if user has already applied to this position
             //Search database for applications with matching OpenPositionId and UserId. Return True if any records are found, False is not
-            var userApplied = db.Applications.Where(a => a.UserId == userId && a.OpenPositionId == id).Any();
-         
+            var userApplied = db.Applications.Where(a => a.UserId == userId && a.OpenPositionId == id).Any();           
             if (userApplied)
             {
                 ViewBag.HasApplied = true;
@@ -131,7 +149,7 @@ namespace JobBoard.UI.MVC.Controllers
             try
             {
                 db.Applications.Add(application);
-                db.SaveChanges();    
+                db.SaveChanges();
             }
             catch (Exception)
             {
@@ -209,30 +227,34 @@ namespace JobBoard.UI.MVC.Controllers
             return View(openPosition);
         }
 
-        // GET: OpenPositions/Delete/5
-        [Authorize(Roles = "Admin, Manager")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OpenPosition openPosition = db.OpenPositions.Find(id);
-            if (openPosition == null)
-            {
-                return HttpNotFound();
-            }
-            return View(openPosition);
-        }
+        //// GET: OpenPositions/Delete/5
+        //[Authorize(Roles = "Admin, Manager")]
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    OpenPosition openPosition = db.OpenPositions.Find(id);
+        //    if (openPosition == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(openPosition);
+        //}
 
-        // POST: OpenPositions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: OpenPositions/Delete/5        
         [Authorize(Roles = "Admin, Manager")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
+            // Soft delete to satisfy FK_Applications_OpenPositions constraint
+
             OpenPosition openPosition = db.OpenPositions.Find(id);
-            db.OpenPositions.Remove(openPosition);
+
+            openPosition.IsActive = false;
+
+            db.Entry(openPosition).State = EntityState.Modified;
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

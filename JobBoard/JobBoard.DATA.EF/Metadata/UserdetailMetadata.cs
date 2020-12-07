@@ -22,7 +22,7 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Open to relocation")]       
         public bool IsOpenToRelocation { get; set; }
 
-        [DisplayFormat(NullDisplayText = "* Title not Provided")]
+        [DisplayFormat(NullDisplayText = "Title not Provided")]
         public string Title { get; set; }
 
         [Display(Name = "Employment Types")]
@@ -35,9 +35,6 @@ namespace JobBoard.DATA.EF
         [Display(Name = "Date of Hire")]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true, NullDisplayText = "Not Provided")]
         public System.DateTime? DateOfHire { get; set; }
-
-        [UIHint("Multilinetext")]
-        public string Notes { get; set; }
 
         [Display(Name = "Employee Image")]
         public string UserImage { get; set; }

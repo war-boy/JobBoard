@@ -19,7 +19,7 @@ namespace JobBoard.UI.MVC.Controllers
         // GET: UserDetails
         public ActionResult Index()
         {
-            var userDetails = db.UserDetails.Include(u => u.PerformanceView).Include(u => u.AspNetUser);
+            var userDetails = db.UserDetails.Include(u => u.AspNetUser);
             return View(userDetails.ToList());
         }
 
@@ -127,7 +127,7 @@ namespace JobBoard.UI.MVC.Controllers
         // GET: UserDetails/Create
         public ActionResult Create()
         {
-            ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating");
+            
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email");
             return View();
         }
@@ -137,7 +137,7 @@ namespace JobBoard.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail)
+        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,IsOpenToNewOpps")] UserDetail userDetail)
         {
             if (ModelState.IsValid)
             {
@@ -147,7 +147,6 @@ namespace JobBoard.UI.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating", userDetail.PerformanceReviewId);
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }
@@ -165,7 +164,6 @@ namespace JobBoard.UI.MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating", userDetail.PerformanceReviewId);
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }
@@ -175,7 +173,7 @@ namespace JobBoard.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,PerformanceReviewId")] UserDetail userDetail, HttpPostedFileBase resume, HttpPostedFileBase userImg, string userViewId)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,IsOpenToNewOpps")] UserDetail userDetail, HttpPostedFileBase resume, HttpPostedFileBase userImg, string userViewId)
         {
           
             if (ModelState.IsValid)
@@ -216,7 +214,7 @@ namespace JobBoard.UI.MVC.Controllers
 
                 if (userImg != null)
                 {
-                    #region Resume
+                    #region Image
 
                     string userImgName = userImg.FileName;
 
@@ -254,7 +252,6 @@ namespace JobBoard.UI.MVC.Controllers
             }
 
 
-            ViewBag.PerformanceReviewId = new SelectList(db.PerformanceReviews, "PerformanceReviewId", "PerformanceRating", userDetail.PerformanceReviewId);
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }

@@ -3,8 +3,9 @@
 @model IEnumerable<JobBoard.DATA.EF.Application>
 
 @{
+    //Get OpenPosition from the Controller and assign to local variable
     OpenPosition openPosition = ViewBag.OpenPosition;
-    ViewBag.Title = $"Applications Submitted for: {openPosition.PositionName}";
+    ViewBag.Title = $"Applications Submitted for: {openPosition.Position.Title} #{openPosition.OpenPositionId}";
 }
 
 @section head{
@@ -18,54 +19,74 @@
 }
 
 
-    <table class="table display" id="table_id">
+    <table class="table">
         <thead>
             <tr>
-
-                <th>
-                    Applicant's Name
-                </th>
 
                 <th>
                     @Html.DisplayNameFor(model => model.ApplicationDate)
                 </th>
 
                 <th>
-                    @Html.DisplayNameFor(model => model.OpenPosition.Position.Title)
+                    Applicant's Name
                 </th>
 
                 <th>
                     @Html.DisplayNameFor(model => model.ApplicationStatu.StatusName)
                 </th>
 
+                <th>
+                    Contact
+                </th>
+
             </tr>
         </thead>
 
-        @foreach (var item in Model)
-        {
-            <tbody>
+        <!-- #region Get current user -->
+        @{
+            JobBoardEntities db = new JobBoardEntities();
+
+            string userID = User.Identity.GetUserId();
+
+            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+        }
+        <!-- #endregion -->
+
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+
                 <tr>
-
-                    <td>
-                        @Html.DisplayNameFor(model => model.UserDetail.FullName)
-                    </td>
-
                     <td>
                         @Html.DisplayFor(modelItem => item.ApplicationDate)
                     </td>
 
                     <td>
-                        <a href="@Url.Action("Details", "OpenPositions", new { id = item.OpenPositionId})">
-                            @Html.DisplayFor(modelItem => item.OpenPosition.Position.Title) - #@Html.DisplayFor(modelItem => item.OpenPositionId)
+                        <a href="@Url.Action("Details", "UserDetails", new { id = item.UserId })">
+                            @Html.DisplayFor(modelItem => item.UserDetail.FullName)
                         </a>
-
                     </td>
 
-                    <td title="@item.ApplicationStatu.StatusDescription">
-                        @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)  <i class="far fa-question-circle icon" title="@item.ApplicationStatu.StatusDescription"></i>
+                    </td>
+
+                    <td>
+                        <a href="@Url.Action("Contact", "Home", new { senderId = currentUser.UserId, receiverId = item.UserId})" title="Contact">
+                            @Html.DisplayFor(modelItem => item.UserDetail.AspNetUser.Email)
+                        </a>
                     </td>
                 </tr>
-            </tbody>
-        }
+            }
+        </tbody>
 
     </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}

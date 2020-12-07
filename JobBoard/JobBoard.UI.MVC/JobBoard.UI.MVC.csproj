@@ -180,7 +180,6 @@
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OpenPositionsController.cs" />
-    <Compile Include="Controllers\PerformanceReviewsController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
@@ -280,10 +279,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
     <Content Include="Content\custom.js" />
-    <Content Include="Content\datatables\datatables.css" />
-    <Content Include="Content\datatables\datatables.js" />
-    <Content Include="Content\datatables\datatables.min.css" />
-    <Content Include="Content\datatables\datatables.min.js" />
     <Content Include="Content\employeeImages\no-user-img.png" />
     <Content Include="Content\employeeImages\photo-1568493021943-4077b55c95a3.jpg" />
     <Content Include="Content\locationImages\kansas-city-image.jpg" />
