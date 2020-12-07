@@ -1,20 +1,22 @@
 ﻿@model JobBoard.UI.MVC.Models.ContactViewModel
 
 @{
-    ViewBag.Title = "Your message was sent successfully!";
+    ViewBag.Title = "Message Confirmation";
 }
 
 @section head{
-    <section class="breadcrumbs">
+    <section class="breadcrumbs" id="breadcrumb-link">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <h2>@ViewBag.Title</h2>
+                <h4>
+                    <a href="@Url.Action("Details", "UserDetails", new { id = Model.ReceiverId })">Return to @Model.ReceiverName's Profile |</a>
+                    <a href="@Url.Action("Index")"> Return to Homepage</a>
+                </h4>
             </div>
         </div>
     </section>
 }
 
 <h2>Your message to @Model.ReceiverName (@Model.ReceiverEmail) was sent successfully.</h2>
-<a href="@Url.Action("Details", "UserDetails", new { id = Model.ReceiverId })">Return to @Model.ReceiverName's Profile |</a>
-<a href="@Url.Action("Index")"> Return to Homepage</a>
+
 

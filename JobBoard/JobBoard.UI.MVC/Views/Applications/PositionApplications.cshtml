@@ -18,70 +18,86 @@
     </section>
 }
 
+<table class="table">
+    <thead>
+        <tr>
 
-    <table class="table">
-        <thead>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationDate)
+            </th>
+
+            <th>
+                Applicant's Name
+            </th>
+
+            <th>
+                Edit Status
+            </th>
+
+            <th>
+
+            </th>
+
+            <th>
+                Contact
+            </th>
+
+        </tr>
+    </thead>
+
+    <!-- #region Get current user -->
+    @{
+        JobBoardEntities db = new JobBoardEntities();
+
+        string userID = User.Identity.GetUserId();
+
+        UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+    }
+    <!-- #endregion -->
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationDate)
+                </td>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.ApplicationDate)
-                </th>
+                <td>
+                    <a href="@Url.Action("Details", "UserDetails", new { id = item.UserId })">
+                        @Html.DisplayFor(modelItem => item.UserDetail.FullName)
+                    </a>
+                </td>
 
-                <th>
-                    Applicant's Name
-                </th>
+                @using (Html.BeginForm("Edit", "Applications", new { appId = item.ApplicationId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
 
-                <th>
-                    @Html.DisplayNameFor(model => model.ApplicationStatu.StatusName)
-                </th>
+                    <td>
+                        @Html.DropDownList("ApplicationStatusId", null, item.ApplicationStatu.StatusName,htmlAttributes: new { @class = "form-control-sm" }) 
+                        <button type="submit" title="Save Changes">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                }
+                <td>
+                    <a href="~/Content/resumes/@item.ResumeFilename" title="@item.ResumeFilename" target="_blank">
+                        View Resume<i class="fa fa-paperclip" aria-hidden="true"></i>
+                    </a>
+                </td>
 
-                <th>
-                    Contact
-                </th>
-
+                <td>
+                    <a href="@Url.Action("Contact", "Home", new { senderId = currentUser.UserId, receiverId = item.UserId })" title="Contact">
+                        @Html.DisplayFor(modelItem => item.UserDetail.AspNetUser.Email)
+                    </a>
+                </td>
             </tr>
-        </thead>
-
-        <!-- #region Get current user -->
-        @{
-            JobBoardEntities db = new JobBoardEntities();
-
-            string userID = User.Identity.GetUserId();
-
-            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
         }
-        <!-- #endregion -->
+    </tbody>
 
 
-        <tbody>
-            @foreach (var item in Model)
-            {
-
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationDate)
-                    </td>
-
-                    <td>
-                        <a href="@Url.Action("Details", "UserDetails", new { id = item.UserId })">
-                            @Html.DisplayFor(modelItem => item.UserDetail.FullName)
-                        </a>
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationStatu.StatusName)  <i class="far fa-question-circle icon" title="@item.ApplicationStatu.StatusDescription"></i>
-                    </td>
-
-                    <td>
-                        <a href="@Url.Action("Contact", "Home", new { senderId = currentUser.UserId, receiverId = item.UserId})" title="Contact">
-                            @Html.DisplayFor(modelItem => item.UserDetail.AspNetUser.Email)
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
+</table>
 
 @section Scripts {
     <script>

@@ -278,7 +278,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
-    <Content Include="Content\custom.js" />
     <Content Include="Content\employeeImages\no-user-img.png" />
     <Content Include="Content\employeeImages\photo-1568493021943-4077b55c95a3.jpg" />
     <Content Include="Content\locationImages\kansas-city-image.jpg" />

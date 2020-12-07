@@ -69,7 +69,7 @@
 {
     if (Model.UserId == currentUser.UserId)
     {
-        using (Html.BeginForm("AddResume", "UserDetails", new { userViewId = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        using(Html.BeginForm("AddResume", "UserDetails", new { userViewId = Model.UserId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="col-md-9">
                 <div class="card resume-card">
@@ -86,7 +86,7 @@
     else
     {
         <div class="col-md-9">
-            <div class="card resume-card">
+            <div class="card resume-card" style="width: -webkit-fill-available;">
                 <div class="card-body">
                     <h2>@Model.FirstName does not have and Resume on file.</h2>
                 </div>

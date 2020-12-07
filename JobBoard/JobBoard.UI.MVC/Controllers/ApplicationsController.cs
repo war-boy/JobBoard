@@ -32,12 +32,6 @@ namespace JobBoard.UI.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (Request.IsAuthenticated && User.IsInRole("Admin"))
-            {
-                var applications = db.Applications.Include(a => a.ApplicationStatu).Include(a => a.OpenPosition).Include(a => a.UserDetail);
-                return View(applications.ToList());
-            }
-
             var yourApplications = db.Applications.Where(a => a.UserId == id);
             return View(yourApplications.ToList());
 
@@ -60,7 +54,9 @@ namespace JobBoard.UI.MVC.Controllers
 
             ViewBag.OpenPosition = openPosition;
 
+            //Exclude rejected resumes
             var positionApplications = db.Applications.Where(a => a.OpenPositionId == id && a.ApplicationStatusId != 2);
+            ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName");
             return View(positionApplications.ToList());
         }
 
@@ -187,6 +183,46 @@ namespace JobBoard.UI.MVC.Controllers
         //    ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
         //    return View(application);
         //}
+
+        //// GET: Applications/Edit/5
+        //public ActionResult AppStatusEdit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Application application = db.Applications.Find(id);
+        //    if (application == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    application.ApplicationStatusId =
+    
+        //}
+
+        // POST: Applications/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int? appId, int applicationStatusId)
+        {
+
+            Application application = db.Applications.Find(appId);
+
+            application.ApplicationStatusId = applicationStatusId;
+
+                db.Entry(application).State = EntityState.Modified;
+                db.SaveChanges();
+
+                //Exclude rejected resumes               
+                return RedirectToAction("PositionApplications", new { id = application.OpenPositionId});
+            //}
+
+            ////Exclude rejected resumes
+            //return RedirectToAction("PositionApplications", new { id = application.OpenPositionId });
+        }
 
         // GET: Applications/Delete/5
         [Authorize(Roles = "Admin")]

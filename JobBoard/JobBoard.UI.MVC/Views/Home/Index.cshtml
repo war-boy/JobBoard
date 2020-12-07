@@ -12,23 +12,28 @@
             </h1>
             <h2>Keep it in the family</h2>
             <div class="d-flex">
-                <a href="@Url.Action("About","Home")" class="btn-get-started scrollto">About Us</a>
+                <a href="@Url.Action("About", "Home")" class="btn-get-started scrollto">About Us</a>
 
             </div>
         </div>
     </section>
 }
 
-@* Put news API here *@
 
-@if (Request.IsAuthenticated)
-{
-    //Get Current User
-    JobBoardEntities db = new JobBoardEntities();
+
+<!-- #region Get current user -->
+@{JobBoardEntities db = new JobBoardEntities();
 
     string userID = User.Identity.GetUserId();
 
     UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+}
+<!-- #endregion -->
+
+
+
+@if (Request.IsAuthenticated)
+{
 
     <h2>Quick Links</h2>
     <section id="featured-services" class="featured-services">
@@ -62,7 +67,7 @@
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
                     <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
                         <div class="icon"><i class="far fa-question-circle"></i></div>
-                        <h4 class="title"><a href="">Help</a></h4>
+                        <h4 class="title"><a href="@Url.Action("Contact", new { senderId = currentUser.UserId, receiverId = Model.UserId})">Help</a></h4>
                         <p class="description">Can't find what you're looking for? Have an error you need to report? Reach out to us about any questions or concerns.</p>
                     </div>
                 </div>
