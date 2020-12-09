@@ -1,39 +1,24 @@
-﻿@using JobBoard.DATA.EF;
-@using Microsoft.AspNet.Identity;
+﻿@model JobBoard.UI.MVC.Models.LoginViewModel
 @{
     ViewBag.Title = "Home Page";
 }
 
-@section banner{
-    <section id="hero" class="d-flex align-items-center index-hero">
-        <div class="container" data-aos="zoom-out" data-aos-delay="100">
-            <h1>
-                Welcome to <span>GlobalSystems</span>. Jobs
-            </h1>
-            <h2>Keep it in the family</h2>
-            <div class="d-flex">
-                <a href="@Url.Action("About", "Home")" class="btn-get-started scrollto">About Us</a>
-
-            </div>
-        </div>
-    </section>
-}
-
-
-
-<!-- #region Get current user -->
-@{JobBoardEntities db = new JobBoardEntities();
-
-    string userID = User.Identity.GetUserId();
-
-    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
-}
-<!-- #endregion -->
-
-
-
 @if (Request.IsAuthenticated)
 {
+    @section banner{
+        <section id="hero" class="d-flex align-items-center index-hero">
+            <div class="container" data-aos="zoom-out" data-aos-delay="100">
+                <h1>
+                    Welcome to <span>GlobalSystems</span>. Jobs
+                </h1>
+                <h2>Keep it in the family</h2>
+                <div class="d-flex">
+                    <a href="@Url.Action("About", "Home")" class="btn-get-started scrollto">About Us</a>
+
+                </div>
+            </div>
+        </section>
+    }
 
     <h2>Quick Links</h2>
     <section id="featured-services" class="featured-services">
@@ -51,8 +36,8 @@
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
                     <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
                         <div class="icon"><i class="far fa-id-badge"></i></div>
-                        <h4 class="title"><a href="@Url.Action("Details", "UserDetails", new { id = currentUser.UserId })">Profile</a></h4>
-                        <p class="description">View your employee profile and customize it to appeal to more hiring managers.</p>
+                        <h4 class="title"><a href="@Url.Action("Index", "UserDetails")">Employee Index</a></h4>
+                        <p class="description">Search the GlobalSystems Employee directory, view their profile and contact them directly.</p>
                     </div>
                 </div>
 
@@ -67,8 +52,8 @@
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
                     <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
                         <div class="icon"><i class="far fa-question-circle"></i></div>
-                        <h4 class="title"><a href="@Url.Action("Contact", new { senderId = currentUser.UserId, receiverId = Model.UserId})">Help</a></h4>
-                        <p class="description">Can't find what you're looking for? Have an error you need to report? Reach out to us about any questions or concerns.</p>
+                        <h4 class="title"><a href="@Url.Action("About", "Home")">About</a></h4>
+                        <p class="description">Learn more about this application.</p>
                     </div>
                 </div>
 
@@ -76,5 +61,63 @@
 
         </div>
     </section><!-- End Featured Services Section -->
-
 }
+else
+{
+    @section head{
+            <div class="col-md-12 login-hero">
+                <section id="loginForm">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div id="inner-index-login" class="col-md-4">
+                            <h2>
+                                <img src="~/Content/assets/img/favicon.PNG" class="login-icon" width="50" /> GlobalSystems Login
+                            </h2>
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div style="padding-left: 49px;">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                        <div class="col-md-11" style="text-align: right;">
+                                            @Html.ActionLink("Forget your password?", "ForgotPassword")
+                                        </div>
+                                    </div>                                  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(m => m.RememberMe)
+                                        @Html.LabelFor(m => m.RememberMe)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="text-align: center;">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Log in" class="btn btn-primary" />
+
+                                    <a href="@Url.Action("Register", "Account")" class="btn btn-success">Sign Up</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </section>
+            </div>
+    }
+}
+
+

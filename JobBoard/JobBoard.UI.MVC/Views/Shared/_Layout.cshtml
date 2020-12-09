@@ -47,8 +47,6 @@
 
     <!--Data Tables-->
     <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
-    @*<link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
-        <link href="~/Content/datatables/datatables.css" rel="stylesheet" />*@
 
 
     <!--Custom CSS-->
@@ -63,63 +61,68 @@
 </head>
 
 <body>
-    <!-- ======= Header ======= -->
-    <header id="header" class="d-none d-lg-flex align-items-center">
-        <div class="container d-flex align-items-center">
+    <div id="wrapper">
+        <!-- ======= Header ======= -->
+        <header id="header" class="d-none d-lg-flex align-items-center">
+            <div class="container d-flex align-items-center">
 
-            <h1 class="logo mr-auto"><a href="@Url.Action("Index", "Home")">GlobalSystems<span>.</span></a></h1>
+                <h1 class="logo mr-auto"><a href="@Url.Action("Index", "Home")">GlobalSystems<span>.</span></a></h1>
 
-            <nav class="nav-menu d-none d-lg-block">
-                <ul id="responsive-nav">
-                    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Locations")">Locations</a></li>
-                    <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
-                    <li><a href="@Url.Action("Index", "UserDetails")">Employee Directory</a></li>
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Manager"))
-                    {
-                        <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>
-                    }
-                    @Html.Partial("_LoginPartial")
-                </ul>
-            </nav><!-- .nav-menu -->
-        </div>
-
-
-    </header><!-- End Header -->
-
-    @RenderSection("banner", required: false)
-
-    @RenderSection("head", required: false)
-
-    @RenderSection("searchBar", required: false)
-
-    <main id="main" class="customMain">
-        <section class="inner-page">
-            <div class="container">
-                @RenderBody()
+                <nav class="nav-menu d-none d-lg-block">
+                    <ul id="responsive-nav">
+                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li><a href="@Url.Action("Index", "Locations")">Locations</a></li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li><a href="@Url.Action("Index", "OpenPositions")">Job Board</a></li>
+                            <li><a href="@Url.Action("Index", "UserDetails")">Employee Directory</a></li>
+                            if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                                <li><a href="@Url.Action("Create", "OpenPositions")">Create Postings</a></li>
+                            }
+                        
+                            @Html.Partial("_LoginPartial")
+                        }
+                    </ul>
+                </nav><!-- .nav-menu -->
             </div>
-        </section>
-    </main>
 
-    <!-- ======= Footer ======= -->
 
-    <footer id="footer">
-        <div class="container py-4">
-            <div class="copyright">
-                &copy; Copyright <strong><span>Ryan Eutsler @DateTime.Now.Year</span></strong>. All Rights Reserved
+        </header><!-- End Header -->
+
+        @RenderSection("banner", required: false)
+
+        @RenderSection("head", required: false)
+
+        @RenderSection("searchBar", required: false)
+
+        <main id="main" class="customMain">
+            <section class="inner-page">
+                <div class="container" style="padding-bottom: 51px;">
+                    @RenderBody()
+                </div>
+            </section>
+        </main>
+
+        <!-- ======= Footer ======= -->
+
+        <div id="footer">
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>Ryan Eutsler @DateTime.Now.Year</span></strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    <!-- All the links in the footer should remain intact. -->
+                    <!-- You can delete the links only if you purchased the pro version. -->
+                    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/bizland-bootstrap-business-template/ -->
+                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
             </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/bizland-bootstrap-business-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </div>
-    </footer><!-- End Footer -->
-
+        </div><!-- End Footer -->
+    </div>
     <div id="preloader"></div>
-    
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

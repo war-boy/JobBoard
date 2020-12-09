@@ -76,140 +76,66 @@ namespace JobBoard.UI.MVC.Controllers
             return View(application);
         }
 
-        // GET: Applications/Create
-        //public ActionResult Create(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    OpenPosition openPosition = db.OpenPositions.Find(id);
-        //    if (openPosition == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    ViewBag.OpId = openPosition.OpenPositionId;
-
-        //    ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName");
-        //    ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId");
-        //    ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName");
-        //    return View();
-        //}
-
-        // POST: Applications/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CreateApp([Bind(Include = "ApplicationId,UserId,OpenPositionId,ApplicationDate,ManagerNotes,ApplicationStatusId,ResumeFilename")] Application application, int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-
-        //    OpenPosition openPosition = db.OpenPositions.Find(id);
-
-        //    if (openPosition == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    #region Get Current User
-        //    string userID = User.Identity.GetUserId();
-
-        //    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
-        //    #endregion
-
-        //    application.OpenPositionId = openPosition.OpenPositionId;
-
-        //    application.UserId = currentUser.UserId;
-
-        //    application.ApplicationDate = DateTime.Now;
-
-        //    application.ApplicationStatusId = 1;
-
-        //    application.ResumeFilename = currentUser.ResumeFileName;
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Applications.Add(application);
-        //        db.SaveChanges();
-        //        return RedirectToAction("ApplicationConfirm", application);
-        //    }
-
-        //    //ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName", application.ApplicationStatusId);
-        //    //ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
-        //    //ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
-
-        //    ViewBag.ApplicationFailed = "We were unable to submit your application. Please contact IT User Support";
-        //    return View();
-        //}
-
-        //// GET: Applications/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Application application = db.Applications.Find(id);
-        //    if (application == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName", application.ApplicationStatusId);
-        //    ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
-        //    ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
-        //    return View(application);
-        //}
-
-        //// POST: Applications/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ApplicationId,UserId,OpenPositionId,ApplicationDate,ManagerNotes,ApplicationStatusId,ResumeFilename")] Application application)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(application).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName", application.ApplicationStatusId);
-        //    ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
-        //    ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
-        //    return View(application);
-        //}
-
-        //// GET: Applications/Edit/5
-        //public ActionResult AppStatusEdit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Application application = db.Applications.Find(id);
-        //    if (application == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    application.ApplicationStatusId =
-    
-        //}
+       
+        // GET: Applications/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Application application = db.Applications.Find(id);
+            if (application == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName", application.ApplicationStatusId);
+            ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
+            ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
+            return View(application);
+        }
 
         // POST: Applications/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int? appId, int applicationStatusId)
+        public ActionResult Edit([Bind(Include = "ApplicationId,UserId,OpenPositionId,ApplicationDate,ApplicationStatusId,ResumeFilename")] Application application)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(application).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.ApplicationStatusId = new SelectList(db.ApplicationStatus, "ApplicationStatusId", "StatusName", application.ApplicationStatusId);
+            ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
+            ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
+            return View(application);
+        }
+
+       
+
+        // POST: Applications/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditApplicationStatus(int? appId, int applicationStatusId)
         {
 
+            if (appId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Application application = db.Applications.Find(appId);
+            if (application == null)
+            {
+                return HttpNotFound();
+            }
 
             application.ApplicationStatusId = applicationStatusId;
 

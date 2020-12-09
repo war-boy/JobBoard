@@ -164,6 +164,7 @@ namespace JobBoard.UI.MVC.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "City", userDetail.LocationId);
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", userDetail.UserId);
             return View(userDetail);
         }
@@ -173,7 +174,7 @@ namespace JobBoard.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,IsOpenToNewOpps")] UserDetail userDetail, HttpPostedFileBase resume, HttpPostedFileBase userImg, string userViewId)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,ResumeFileName,IsOpenToRelocation,Title,EmploymentType,VisaStatus,DateOfHire,Notes,UserImage,IsOpenToNewOpps,LocationId")] UserDetail userDetail, HttpPostedFileBase resume, HttpPostedFileBase userImg, string userViewId)
         {
           
             if (ModelState.IsValid)

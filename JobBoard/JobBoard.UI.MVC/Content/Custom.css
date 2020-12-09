@@ -1,7 +1,25 @@
 ﻿/*General*/
+html {
+    height: 100%;   
+}
+
 body {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#wrapper {
+    min-height: 100%;
+    position: relative;
+}
+
+#footer {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    bottom: 0;
+    left: 0;
 }
 
 h2 {
@@ -35,8 +53,27 @@ a.btn-danger {
     color: #fff !important;
 }
 
-td a:hover{
+table.dataTable thead {
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+}
+
+table.dataTable tbody td {
+    font-size: 15px;
+    line-height: 28px;
+    font-weight: 400;
+    font-family: "Open Sans", sans-serif;
+}
+
+td a:hover {
     text-decoration: underline;
+}
+
+div.dataTables_info {
+    font-size: 10px;
+    line-height: 28px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .form-btns a.btn, .form-btns input.btn {
@@ -58,8 +95,9 @@ td a:hover{
     font-size: 15px;
 }
 
-/*Job Board*/
 
+
+/*Job Board*/
 div.panel-primary {
     border-top-width: 0px;
 }
@@ -115,7 +153,18 @@ div.panel-heading a {
 
 .applied-btn {
     cursor: default !important;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
 }
+
+    .applied-btn:active, .applied-btn:focus, .applied-btn:hover {
+        cursor: default !important;
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
+        box-shadow: none;
+    }
 
 
 /*To get the button and search bar on the job board to be horizontal*/
@@ -139,7 +188,9 @@ h5.card-title {
 
 p.card-text {
     margin-bottom: .75rem;
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .card.text-center {
@@ -150,13 +201,13 @@ select.form-control, input.form-control {
     margin: 5px 0;
 }
 
-    .search-container select{
-        margin: 0;
-    }
+.search-container select {
+    margin: 0;
+}
 
-    textarea.form-control {
-        padding-bottom: 75px;
-    }
+textarea.form-control {
+    padding-bottom: 75px;
+}
 
 
 /*UserDetails - Details*/
@@ -183,6 +234,9 @@ li.list-group-item {
     padding-left: 35px;
 }
 
+    .right-card select, .right-card input {
+        margin-bottom: 1em;
+    }
 
 .resume-card {
     text-align: center;
@@ -194,7 +248,7 @@ li.list-group-item {
         padding: 10px;
     }
 
-    .resume-card input[type="file"], .employeeDetails input[type="file"]{
+    .resume-card input[type="file"], .employeeDetails input[type="file"] {
         display: -webkit-inline-box;
         padding-right: inherit;
     }
@@ -218,3 +272,74 @@ li.list-group-item {
     font-size: 15px;
 }
 
+/*Login Form*/
+#inner-index-login {
+    padding: 2em;
+    margin-left: 30%;
+    background: ghostwhite;
+   
+}
+
+.login-hero {
+    background: url("../Content/assets/img/location-banner.jpg") top;
+    background-size: cover;
+    padding-bottom: 20%;
+    position: fixed;
+}
+
+
+
+#inner-index-login input[type="text"], #inner-index-login input[type="password"] {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    max-width: 305px;
+}
+
+    #inner-index-login h2 {
+        padding: 1em;
+        text-align: center;
+    }
+
+    #inner-index-login label.control-label {
+        display: block;
+        position: relative;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: "Open Sans", sans-serif;
+    }
+
+    #inner-index-login label[for="email"] {
+        text-align: inherit;
+    }
+
+#inner-index-login input[type="checkbox"]{
+    margin-top: 0;
+}
+
+label[for="RememberMe"] {
+    padding-left: 0;
+}
+
+#inner-index-login a.btn-success {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+#inner-index-login .btn{
+    margin: 0.5em;
+}

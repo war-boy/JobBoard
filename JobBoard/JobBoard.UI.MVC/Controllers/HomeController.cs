@@ -1,10 +1,13 @@
-﻿using JobBoard.DATA.EF;
-using JobBoard.UI.MVC.Models;
-using System;
+﻿using System;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using JobBoard.DATA.EF;
+using JobBoard.UI.MVC.Models;
 using System.Net.Mail;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace JobBoard.UI.MVC.Controllers
 {
@@ -12,8 +15,6 @@ namespace JobBoard.UI.MVC.Controllers
     {
         private JobBoardEntities db = new JobBoardEntities();
 
-        [HttpGet]
-        //[Authorize]
         public ActionResult Index()
         {
             return View();
@@ -75,31 +76,22 @@ namespace JobBoard.UI.MVC.Controllers
                 return View(cvm);
             }
 
-            string senderEmail = cvm.SenderEmail;
-
-            string recevierEmail = cvm.ReceiverEmail;
-
-            #region Employee to Employee
             MailMessage mm = new MailMessage(
                 $"admin@ryaneutsler.com",
 
-                $"ryan.eutsler@outlook.com {recevierEmail}",
-                
+                cvm.ReceiverEmail,
+
+                //$"ryan.eutsler@outlook.com {recevierEmail}",
+
                 cvm.Subject,
                
                 cvm.Message
                 );
-            #endregion
+
 
             mm.IsBodyHtml = true;
 
-            //if (cvm.IsAppReply)
-            //{
-            //    mm.Priority = MailPriority.High;
-            //}
-           
-
-            mm.ReplyToList.Add(senderEmail);
+            mm.ReplyToList.Add(cvm.SenderEmail);
 
             SmtpClient client = new SmtpClient("mail.ryaneutsler.com");
 

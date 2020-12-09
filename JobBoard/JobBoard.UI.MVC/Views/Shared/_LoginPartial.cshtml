@@ -27,7 +27,7 @@
 
 
         <li class="drop-down">
-            <a href="">Hello @userName</a>
+            <a href="@Url.Action("Details", "UserDetails", new { id = currentUser.UserId })">Hello @userName</a>
             <ul>
                 <li><a href="@Url.Action("Details", "UserDetails", new { id = currentUser.UserId })">Profile</a></li>
 

@@ -1,4 +1,6 @@
 ﻿@model JobBoard.DATA.EF.OpenPosition
+@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
 
 @{
     ViewBag.Title = $"Edit Req #{Model.OpenPositionId}";
@@ -15,71 +17,83 @@
 }
 
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    #region Get current user
+    JobBoardEntities db = new JobBoardEntities();
+
+    string userID = User.Identity.GetUserId();
+
+    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+    #endregion
+
     //To keep the OpenPosition from soft deleting after editing
-    @Html.Hidden("IsActive", true)
+    Html.Hidden("IsActive", true);
 
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.OpenPositionId)
-        @Html.HiddenFor(model => model.IsRemote)
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.OpenPositionId)
+    @Html.HiddenFor(model => model.IsRemote)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PositionId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
-                <a href="@Url.Action("Create", "Positions")">Don't see it? Click here to add your opening.</a>
-            </div>
-
+    <div class="form-group">
+        @Html.LabelFor(model => model.PositionId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("PositionId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PositionId, "", new { @class = "text-danger" })
+            <a href="@Url.Action("Create", "Positions")">Don't see it? Click here to add your opening.</a>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsRemote, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsRemote, new { @id = "IsRemoteBox" })
-                    @Html.ValidationMessageFor(model => model.IsRemote, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
+    </div>
 
-        <div class="form-group" id="LocationBox">
-            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.EmploymentType,
-          new SelectList(new[] { new { Value = "Contract", Text = "Contract" }, new { Value = "Contract to Hire", Text = "Contract to Hire" }, new { Value = "Direct Hire", Text = "Direct Hire" } }, "Value", "Text", Model), new { @class = "form-control form-control-lg" })
-                @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-8 form-btns">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Details", new { id = Model.OpenPositionId })" class="btn btn-danger">Cancel</a>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsRemote, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.DropDownListFor(model => model.IsRemote,
+       new SelectList(new[] { new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", Model), new { @class = "form-control form-control-lg" })
+                @Html.ValidationMessageFor(model => model.IsRemote, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+
+    <div class="form-group" id="LocationBox">
+        @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.EmploymentType,
+      new SelectList(new[] { new { Value = "Contract", Text = "Contract" }, new { Value = "Contract to Hire", Text = "Contract to Hire" }, new { Value = "Direct Hire", Text = "Direct Hire" } }, "Value", "Text", Model), new { @class = "form-control form-control-lg" })
+            @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-8 form-btns">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a href="@Url.Action("Details", new { id = Model.OpenPositionId, userId = currentUser.UserId })" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+</div>
 }
+
+<div style="padding-bottom: 12em;"></div>
 
 
 @section Scripts {

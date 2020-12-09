@@ -19,7 +19,8 @@ namespace JobBoard.UI.MVC.Controllers
         private JobBoardEntities db = new JobBoardEntities();
 
         // GET: OpenPositions
-        [Authorize]
+        //Job Board
+        [Authorize]        
         public ActionResult Index(int? locationId, string searchString, string currentFilter, int page = 1)
         {
             int pageSize = 10;
@@ -79,7 +80,7 @@ namespace JobBoard.UI.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var yourPositions = db.OpenPositions.Where(op => op.Location.ManagerId == id);
+            var yourPositions = db.OpenPositions.Where(op => op.Location.ManagerId == id && op.IsActive != false);
             return View(yourPositions.ToList());
         }
 
@@ -176,10 +177,11 @@ namespace JobBoard.UI.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin, Manager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration")] OpenPosition openPosition)
+        public ActionResult Create([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration,IsActive")] OpenPosition openPosition)
         {
             if (ModelState.IsValid)
             {
+                openPosition.IsActive = true;
                 db.OpenPositions.Add(openPosition);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -214,7 +216,7 @@ namespace JobBoard.UI.MVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin, Manager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration")] OpenPosition openPosition)
+        public ActionResult Edit([Bind(Include = "OpenPositionId,LocationId,PositionId,IsRemote,EmploymentType,Duration,IsActive")] OpenPosition openPosition)
         {
             if (ModelState.IsValid)
             {

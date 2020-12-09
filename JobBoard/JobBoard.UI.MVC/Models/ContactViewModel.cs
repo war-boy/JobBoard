@@ -16,6 +16,9 @@ namespace JobBoard.UI.MVC.Models
         public string SenderEmail { get; set; }
 
         [Required]
+        public string SenderId { get; set; }
+
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string ReceiverEmail { get; set; }
 

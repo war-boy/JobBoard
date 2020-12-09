@@ -20,127 +20,119 @@
 {
     @Html.AntiForgeryToken()
 
-    <!-- #region Get current user -->
-
-    JobBoardEntities db = new JobBoardEntities();
-
-    string userID = User.Identity.GetUserId();
-
-    UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
-
-    <!-- #endregion -->
-
-
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.DateOfHire)
+    @Html.HiddenFor(model => model.Title)
 
+    @Html.HiddenFor(model => model.UserImage)
+    <div class="form-group">
+        <div class="col-md-3 employeeDetails">
+            <div>
+                @if (Model.UserImage != null)
+                {
+                    <img src="~/Content/employeeImages/@Model.UserImage" alt="@Model.UserImage" class="card-img-top" />
+                }
+                else
+                {
+                    <img class="card-img-top" src="~/Content/employeeImages/no-user-img.png" alt="No user image">
+                }
+            </div>
+            <br />
 
-    <!--Only Admins, Employees (who were able to access this action), and managers IF this is their information-->
-    if (Request.IsAuthenticated && User.IsInRole("Admin") || Request.IsAuthenticated && User.IsInRole("Employee") || Request.IsAuthenticated && User.IsInRole("Manager") && currentUser.UserId == Model.UserId)
-    {
+            <p>
+                <label>Change Image: </label><input type="file" name="userImg" />
+            </p>
+            <span class="text-danger">@ViewBag.InvalidImageFile</span>
+        </div>
+    </div>
 
-        @Html.HiddenFor(model => model.UserImage)
+    <div class="col-md-9 form-horizontal right-card">
         <div class="form-group">
-            <div class="col-md-3 employeeDetails">
-                <div>
-                    @if (Model.UserImage != null)
-                    {
-                        <img src="~/Content/employeeImages/@Model.UserImage" alt="@Model.UserImage" class="card-img-top" />
-                    }
-                    else
-                    {
-                        <img class="card-img-top" src="~/Content/employeeImages/no-user-img.png" alt="No user image">
-                    }
-                </div>
-                <br />
-
-                <p>
-                    <label>Change Image: </label><input type="file" name="userImg" />
-                </p>
-                <span class="text-danger">@ViewBag.InvalidImageFile</span>
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="col-md-9 form-horizontal right-card">
-            <div class="form-group">
-                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("LocationId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
             </div>
+        </div>
 
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.IsOpenToNewOpps, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.IsOpenToNewOpps, new SelectList(new[] {
-                       new { Value = true, Text = "Yes" },
-                       new { Value = false, Text = "No" }, }, "Value", "Text", Model), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.IsOpenToNewOpps, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsOpenToNewOpps, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IsOpenToNewOpps, new SelectList(new[] {
+               new { Value = true, Text = "Yes" },
+               new { Value = false, Text = "No" }, }, "Value", "Text", Model), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IsOpenToNewOpps, "", new { @class = "text-danger" })
             </div>
+        </div>
 
-            @Html.HiddenFor(model => Model.ResumeFileName)
-            <div class="form-group">
-                @Html.LabelFor(model => model.ResumeFileName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <label>Upload new resume: </label><input type="file" name="resume" />
-                </div>
-                <h5 style="color: red; padding-top: inherit;">@ViewBag.InvalidResumeFile</h5>
+        @Html.HiddenFor(model => Model.ResumeFileName)
+        <div class="form-group">
+            @Html.LabelFor(model => model.ResumeFileName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label>Upload new resume: </label><input type="file" name="resume" />
             </div>
+            <h5 style="color: red; padding-top: inherit;">@ViewBag.InvalidResumeFile</h5>
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.IsOpenToRelocation, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.IsOpenToRelocation, new SelectList(new[] {
-                       new { Value = true, Text = "Yes" },
-                       new { Value = false, Text = "No" }, }, "Value", "Text", Model), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.IsOpenToRelocation, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsOpenToRelocation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IsOpenToRelocation, new SelectList(new[] {
+               new { Value = true, Text = "Yes" },
+               new { Value = false, Text = "No" }, }, "Value", "Text", Model), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IsOpenToRelocation, "", new { @class = "text-danger" })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.EmploymentType, new SelectList(new[] {
-                           new { Value = "Any", Text = "Any" },
-                           new { Value = "Contract", Text = "Contract" },
-                           new { Value = "Contract To Hire", Text = "Contract To Hire" },
-                           new { Value = "Permanent", Text = "Permanent" },
-                           new { Value = "Full-Time", Text = "Full-Time" },
-                           new { Value = "Part-Time", Text = "Part-Time" },
-                           }, "Value", "Text", Model), new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmploymentType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.EmploymentType, new SelectList(new[] {
+                       new { Value = "Any", Text = "Any" },
+                       new { Value = "Contract", Text = "Contract" },
+                       new { Value = "Contract To Hire", Text = "Contract To Hire" },
+                       new { Value = "Permanent", Text = "Permanent" },
+                       new { Value = "Full-Time", Text = "Full-Time" },
+                       new { Value = "Part-Time", Text = "Part-Time" },
+                       }, "Value", "Text", Model), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EmploymentType, "", new { @class = "text-danger" })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.VisaStatus, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.VisaStatus, new SelectList(new[] {
-                                   new { Value = "Not Specified", Text = "Not Specified" },
-                                   new { Value = "Citizen", Text = "US Citizen" },
-                                   new { Value = "Green Card", Text = "Green Card" },
-                                   new { Value = "H1-B", Text = "H1-B" },
-                                   new { Value = "OPT", Text = "OPT" },
-                                   new { Value = "TN", Text = "TN Visa" },
-                                   new { Value = "Other", Text = "Other" }, }, "Value", "Text", Model), new { htmlAttributes = new { @class = "form-control" } })
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.VisaStatus, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.VisaStatus, new SelectList(new[] {
+                               new { Value = "Not Specified", Text = "Not Specified" },
+                               new { Value = "Citizen", Text = "US Citizen" },
+                               new { Value = "Green Card", Text = "Green Card" },
+                               new { Value = "H1-B", Text = "H1-B" },
+                               new { Value = "OPT", Text = "OPT" },
+                               new { Value = "TN", Text = "TN Visa" },
+                               new { Value = "Other", Text = "Other" }, }, "Value", "Text", Model), new { @class = "form-control" })
             </div>
+        </div>
 
+        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+        {
             <div class="form-group">
                 @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -156,16 +148,17 @@
                     @Html.ValidationMessageFor(model => model.DateOfHire, "", new { @class = "text-danger" })
                 </div>
             </div>
+        }
 
-            <div class="form-group row">
-                <div class="col-md-8 form-btns">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    <a href="@Url.Action("Details", "UserDetails", new { id = currentUser.UserId })" class="btn btn-danger">Cancel</a>
-                </div>
+        <div class="form-group row">
+            <div class="col-md-8 form-btns">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Details", "UserDetails", new { id = Model.UserId })" class="btn btn-danger">Cancel</a>
             </div>
-
         </div>
-    }
+
+    </div>
+}
 }
 
 

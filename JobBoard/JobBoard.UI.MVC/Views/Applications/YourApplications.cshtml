@@ -1,4 +1,6 @@
-﻿@model IEnumerable<JobBoard.DATA.EF.Application>
+﻿@using Microsoft.AspNet.Identity;
+@using JobBoard.DATA.EF;
+@model IEnumerable<JobBoard.DATA.EF.Application>
 
 @{
     ViewBag.Title = "Your Applications";
@@ -38,13 +40,21 @@
         @foreach (var item in Model)
         {
 
+            #region Get current user
+            JobBoardEntities db = new JobBoardEntities();
+
+            string userID = User.Identity.GetUserId();
+
+            UserDetail currentUser = db.UserDetails.Where(ud => ud.UserId == userID).FirstOrDefault();
+            #endregion
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ApplicationDate)
                 </td>
 
                 <td>
-                    <a href="@Url.Action("Details", "OpenPositions", new { id = item.OpenPositionId})">
+                    <a href="@Url.Action("Details", "OpenPositions", new { id = item.OpenPositionId, userId = currentUser.UserId})">
                         @Html.DisplayFor(modelItem => item.OpenPosition.Position.Title) - #@Html.DisplayFor(modelItem => item.OpenPositionId)
                     </a>
 
@@ -58,6 +68,7 @@
     </tbody>
 
 </table>
+<div style="margin-bottom: 10em;"></div>
 
 @section Scripts {
 

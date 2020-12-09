@@ -10,14 +10,14 @@
 @section searchBar{
     <div id="header" class="d-none d-lg-flex align-items-center">
         <div class="container">
-            @using (Html.BeginForm("Index", "OpenPositions", FormMethod.Get, new { @class = "" }))
+            @using (Html.BeginForm("Index", "OpenPositions", FormMethod.Get))
             {
                 <div class="col-md-4 search-container">
                     @Html.DropDownList("LocationId", null, "All Locations", htmlAttributes: new { @class = "form-control form-control-lg" })
                 </div>
 
                 <div class="col-md-6 search-container">
-                    @Html.TextBox("SearchString", ViewBag.SearchString as string, new { @class = "form-control input-large", @placeholder = "Search by Keyword", @id = "search-bar" })
+                    @Html.TextBox("SearchString", ViewBag.SearchString as string, new { @class = "form-control input-large", @placeholder = "Search by Job Title", @id = "search-bar" })
                     <input type="submit" value="Search" class="btn btn-primary search-btn" />
                 </div>
             }
@@ -66,7 +66,7 @@ else
 
 }
 
-@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.SearchString }))
 

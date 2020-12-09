@@ -281,6 +281,8 @@
     <Content Include="Content\employeeImages\no-user-img.png" />
     <Content Include="Content\employeeImages\photo-1568493021943-4077b55c95a3.jpg" />
     <Content Include="Content\locationImages\kansas-city-image.jpg" />
+    <Content Include="Content\locationImages\portland-image.jpg" />
+    <Content Include="Content\locationImages\richmond-image.jpeg" />
     <Content Include="Content\locationImages\seattle-image.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -543,11 +545,6 @@
     <Content Include="Views\OpenPositions\Details.cshtml" />
     <Content Include="Views\OpenPositions\Edit.cshtml" />
     <Content Include="Views\OpenPositions\Index.cshtml" />
-    <Content Include="Views\PerformanceReviews\Create.cshtml" />
-    <Content Include="Views\PerformanceReviews\Delete.cshtml" />
-    <Content Include="Views\PerformanceReviews\Details.cshtml" />
-    <Content Include="Views\PerformanceReviews\Edit.cshtml" />
-    <Content Include="Views\PerformanceReviews\Index.cshtml" />
     <Content Include="Views\OpenPositions\Delete.cshtml" />
     <Content Include="Views\OpenPositions\YourPositions.cshtml" />
     <Content Include="Views\Applications\PositionApplications.cshtml" />

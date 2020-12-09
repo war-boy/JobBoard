@@ -63,7 +63,7 @@
 
                 <div style="padding-top: inherit;">
 
-                    @if (currentUser.ResumeFileName != null)
+                    @if (currentUser.ResumeFileName != null && Model.IsActive != false)
                     {
 
                         if (ViewBag.HasApplied == false)
@@ -72,7 +72,7 @@
                         }
                         else
                         {
-                            <a href="" class="btn btn-success applied-btn">Applied &check;</a>
+                            <button class="btn btn-success applied-btn">Applied &check;</button>
                         }
                     }
                     else
@@ -102,6 +102,16 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="dialog" title="Confirm Delete">
+    <p>Are you sure you want to delete this Position? Employees won't be able to view or apply to this position.</p>
+    <div class="form-group row">
+        <div class="col-md-12 form-btns">
+            <a href="@Url.Action("Delete", "OpenPositions", new { id = Model.OpenPositionId })" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+
 </div>
 
 

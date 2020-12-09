@@ -21,21 +21,6 @@ namespace JobBoard.UI.MVC.Controllers
             return View(locations.ToList());
         }
 
-        // GET: Locations/Details/5
-        //public ActionResult OpenPositionsAtLocation(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Location location = db.Locations.Find(id);
-        //    if (location == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(location);
-        //}
-
         // GET: Locations/Create
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
@@ -94,7 +79,7 @@ namespace JobBoard.UI.MVC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FirstName", location.ManagerId);
+            ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FullName", location.ManagerId);
             return View(location);
         }
 

@@ -32,6 +32,8 @@ namespace JobBoard.UI.MVC
             bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
                    "~/Content/jquery-ui.css"));
 
+
+
         }
     }
 }

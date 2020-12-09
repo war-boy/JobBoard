@@ -103,20 +103,23 @@ namespace JobBoard.UI.MVC.Controllers
                     if (selectedRoles != null)
                     {
                         #region Custom User Details
-                        UserDetail userDetails = new UserDetail();
-                        userDetails.UserId = user.Id;
-                        userDetails.FirstName = userViewModel.FirstName;
-                        userDetails.LastName = userViewModel.LastName;
-                        
-                   
-                        userDetails.Title = userViewModel.Title;
-                        userDetails.DateOfHire = userViewModel.DateOfHire;
-                        userDetails.VisaStatus = userViewModel.VisaStatus;
+                        UserDetail userDetails = new UserDetail()
+                        {
+                            UserId = user.Id,
+                            FirstName = userViewModel.FirstName,
+                            LastName = userViewModel.LastName,
+                            LocationId = userViewModel.LocationId,
+                            Title = userViewModel.Title,
+                            DateOfHire = userViewModel.DateOfHire,
+                            VisaStatus = userViewModel.VisaStatus,
+                            IsOpenToRelocation = false,
+                            IsOpenToNewOpps = false
 
-                        db.UserDetails.Add(userDetails);
-
-                        db.SaveChanges();
+                        };
                         #endregion
+
+                        JobBoardEntities db = new JobBoardEntities();
+
                         var result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
                         if (!result.Succeeded)
                         {
@@ -125,6 +128,10 @@ namespace JobBoard.UI.MVC.Controllers
                             ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
                             return View();
                         }
+
+                        db.UserDetails.Add(userDetails);
+                        db.SaveChanges();
+                        return RedirectToAction("Login", "Account");
                     }
                 }
                 else
